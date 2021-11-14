@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 using EbSoft.Warehouse.SDK.Extensions;
@@ -11,29 +10,34 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftReceptions : IReceptions
     {
         private readonly IWebRequest _server;
+        private readonly IFilter _filter;
 
-       
-        public EbSoftReceptions(
-            IWebRequest server)
+        public EbSoftReceptions(IWebRequest server)
+            : this(server, new ReceptionFilter())
         {
-
-            _server= server;
         }
 
-        public async Task<IList<IReception>> ToListAsync()
+        public EbSoftReceptions(IWebRequest server, IFilter filter)
         {
-            var dict = new Dictionary<string, string>();
-            dict.Add("filter", "getListCmr");
-            dict.Add("date", "2021-10-28");
+            _server= server;
+            _filter = filter;
+        }
 
-            var response = await _server
-                .WithQueryParams(dict)
-                .ReadAsync<List<JObject>>()
-                .ConfigureAwait(false);
+        public IReceptions With(IFilter filter)
+        {
+            return new EbSoftReceptions(_server, filter);
+        }
 
-            return response.Select(
-                reception => new EbSoftReception(_server, reception)
-            ).ToList<IReception>();
+        public Task<IList<IReception>> ToListAsync()
+        {
+            return _server
+                .WithQueryParams(_filter.ToQueryParams())
+                .SelectAsync(ToReception);
+        }
+
+        private IReception ToReception(JObject reception)
+        {
+            return new EbSoftReception(_server, reception);
         }
     }
 }

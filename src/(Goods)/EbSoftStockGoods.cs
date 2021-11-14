@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.Extensions;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using Warehouse.Core.Core;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
