@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbSoft.Warehouse.SDK", "src\EbSoft.Warehouse.SDK.csproj", "{6A7CEF22-A164-440D-B263-87881CC97596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbSoft.Warehouse.SDK.UnitTests", "tests\EbSoft.Warehouse.SDK.UnitTests.csproj", "{A1A31585-3092-4ECC-B34B-3E3A02249503}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A7CEF22-A164-440D-B263-87881CC97596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A7CEF22-A164-440D-B263-87881CC97596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A7CEF22-A164-440D-B263-87881CC97596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A7CEF22-A164-440D-B263-87881CC97596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1A31585-3092-4ECC-B34B-3E3A02249503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1A31585-3092-4ECC-B34B-3E3A02249503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1A31585-3092-4ECC-B34B-3E3A02249503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1A31585-3092-4ECC-B34B-3E3A02249503}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2038A63-E6A4-44D2-9530-779962487E03}
+	EndGlobalSection
+EndGlobal

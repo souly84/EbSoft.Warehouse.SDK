@@ -1,0 +1,92 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+- group: EbSoft_Warehouse_SDK
+- name: isDevelop
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+- name: solution
+  value: '**/*.sln'
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildConfiguration
+  value: 'Release'
+- name: releaseBuildNumber
+  value: '1.0.0'
+- name: outputDirectory
+  value: '$(build.binariesDirectory)/$(buildConfiguration)'
+
+name: $(releaseBuildNumber).$(Build.BuildId)
+
+steps:
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens'
+  inputs:
+    targetFiles: |
+      **/*.config
+      **/*.json => outputs/*.json
+
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+    feedsToUse: config
+    nugetConfigPath: NuGet.config
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'souly84'
+    scannerMode: 'MSBuild'
+    projectKey: 'souly84_EbSoft.Warehouse.SDK'
+    projectName: 'EbSoft.Warehouse.SDK'
+    extraProperties: |
+        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\tests\coverage.opencover.xml
+        sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)\*.trx
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run tests'
+  inputs:
+    command: 'test'
+    projects: '**/*[Tt]est*/*.csproj'
+    publishTestResults: true
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true "/p:CoverletOutputFormat=\"opencover,Cobertura\""'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage result'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '**/*.cobertura.xml'
+
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
+- task: MSBuild@1
+  displayName: 'NuGet pack EbSoft.Warehouse.SDK'
+  inputs:
+    solution: src/EbSoft.Warehouse.SDK.csproj
+    configuration: '$(buildConfiguration)'
+    msbuildArguments: '/p:PackageVersion=$(Build.BuildNumber) /t:pack /p:packageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeReferencedProjects=true'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  condition: and(succeeded(), eq(variables.isDevelop, true))
+  inputs:
+    command: push
+    publishVstsFeed: 'Warehouse/Warehouse'
+    allowPackageConflicts: true
