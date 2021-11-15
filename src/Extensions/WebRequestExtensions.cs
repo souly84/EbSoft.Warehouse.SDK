@@ -47,5 +47,10 @@ namespace EbSoft.Warehouse.SDK.Extensions
                     .Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
             );
         }
+
+        public static IWebRequest WithFilter(this IWebRequest request, IFilter filter)
+        {
+            return request.WithQueryParams(filter.ToQueryParams());
+        }
     }
 }

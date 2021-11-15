@@ -31,7 +31,7 @@ namespace EbSoft.Warehouse.SDK
         public Task<IList<IReception>> ToListAsync()
         {
             return _server
-                .WithQueryParams(_filter.ToQueryParams())
+                .WithFilter(_filter)
                 .SelectAsync(ToReception);
         }
 

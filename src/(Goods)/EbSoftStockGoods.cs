@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.Extensions;
-using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -11,36 +9,33 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftStockGoods : IGoods
     {
         private readonly IWebRequest _server;
-        private readonly string _receptionId;
+        private readonly IFilter _filter;
 
         public EbSoftStockGoods(
             IWebRequest server,
             string receptionId)
+            : this(server, new GoodsFilter(receptionId))
         {
-            _server = server;
-            _receptionId = receptionId;
         }
 
-        public async Task<IList<IGood>> ToListAsync()
+        public EbSoftStockGoods(
+            IWebRequest server,
+            IFilter filter)
         {
-            var dict = new Dictionary<string, string>();
-            dict.Add("filter", "getCmrlines");
-            dict.Add("id", _receptionId);
+            _server = server;
+            _filter = filter;
+        }
 
-            var response = await _server
-                .WithQueryParams(dict)
-                .ReadAsync<List<JObject>>()
-                .ConfigureAwait(false);
-
-            return response.Select(
-                good => new EbSoftGood(_server, good)
-            ).ToList<IGood>();
-
+        public Task<IList<IGood>> ToListAsync()
+        {
+            return _server
+                .WithFilter(_filter)
+                .SelectAsync<IGood>((good) => new EbSoftGood(_server, good));
         }
 
         public IGoods With(IFilter filter)
         {
-            return this;
+            return new EbSoftStockGoods(_server, filter);
         }
     }
 }
