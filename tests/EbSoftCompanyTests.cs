@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -8,8 +9,8 @@ namespace EbSoft.Warehouse.SDK.Tests
 {
     public class EbSoftCompanyTests
     {
-        private static string _ebSoftCompanyUri = ConfigurationManager.AppSettings["companyUri"];
         private const string _azureDevOpsSkipReason = "Not on corporate network";
+        private static string _ebSoftCompanyUri = ConfigurationManager.AppSettings["companyUri"];
         private EbSoftCompany _ebSoftCompany = new EbSoftCompany(
             _ebSoftCompanyUri
         );
@@ -40,14 +41,20 @@ namespace EbSoft.Warehouse.SDK.Tests
         public async Task GetReceptions()
         {
             Assert.NotEmpty(
-                await _ebSoftCompany.Warehouse.Receptions.ToListAsync()
+                await _ebSoftCompany
+                    .Warehouse
+                    .Receptions.For(new DateTime(2021, 10, 28))
+                    .ToListAsync()
             );
         }
 
         [Fact(Skip = _azureDevOpsSkipReason)]
         public async Task GetReceptionGoods()
         {
-            var receptions = await _ebSoftCompany.Warehouse.Receptions.ToListAsync();
+            var receptions = await _ebSoftCompany
+                .Warehouse
+                .Receptions.For(new DateTime(2021, 10, 28))
+                .ToListAsync();
             Assert.NotEmpty(
                 await receptions.First().Goods.ToListAsync()
             );

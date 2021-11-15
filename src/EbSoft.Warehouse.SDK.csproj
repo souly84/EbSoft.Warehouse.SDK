@@ -5,7 +5,7 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <PackageReference Include="Warehouse.Core" Version="1.0.0.70" />
+    <PackageReference Include="Warehouse.Core" Version="1.0.0.132" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="WebRequest.Elegant" Version="1.0.12" />
   </ItemGroup>
