@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
+using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
@@ -20,19 +22,14 @@ namespace EbSoft.Warehouse.SDK
 
         public IGoods Goods => new EbSoftStockGoods(_server, _ebSoftReception.Value<string>("id"));
 
-        public Task ConfirmAsync(IGood good)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task ValidateAsync()
-        {
-            return Task.CompletedTask;
-        }
-
         public override string ToString()
         {
             return _ebSoftReception.ToString();
+        }
+
+        public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
