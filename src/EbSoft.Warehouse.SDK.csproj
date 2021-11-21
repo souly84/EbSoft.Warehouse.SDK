@@ -5,9 +5,9 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <PackageReference Include="Warehouse.Core" Version="1.0.0.147" />
+    <PackageReference Include="Warehouse.Core" Version="1.0.0.153" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="WebRequest.Elegant" Version="1.0.12" />
+    <PackageReference Include="WebRequest.Elegant" Version="1.0.12.2" />
     <PackageReference Include="MediaPrint" Version="1.0.0.3" />
   </ItemGroup>
 </Project>

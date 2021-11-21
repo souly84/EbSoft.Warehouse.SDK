@@ -13,11 +13,7 @@ namespace EbSoft.Warehouse.SDK.Extensions
     {
         public static async Task<T> ReadAsync<T>(this IWebRequest request)
         {
-            var response = await request
-               .GetResponseAsync()
-               .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content
+            var content = await request
                .ReadAsStringAsync()
                .ConfigureAwait(false);
             if (typeof(T) == typeof(string))

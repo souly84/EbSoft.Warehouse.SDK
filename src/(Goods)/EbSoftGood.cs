@@ -34,7 +34,8 @@ namespace EbSoft.Warehouse.SDK
 
         public override bool Equals(object obj)
         {
-            return TheSameId(obj)
+            return object.ReferenceEquals(obj, this)
+                || TheSameId(obj)
                 || TheSameBarcode(obj)
                 || TheSameArticle(obj)
                 || TheSameType(obj);

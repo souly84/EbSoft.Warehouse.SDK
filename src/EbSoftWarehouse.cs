@@ -1,4 +1,5 @@
-﻿using Warehouse.Core;
+﻿using System;
+using Warehouse.Core;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
@@ -12,6 +13,6 @@ namespace EbSoft.Warehouse.SDK
             _server = server;
         }
 
-        public IReceptions Receptions => new EbSoftReceptions(_server);
+        public IReceptions Receptions => throw new NotImplementedException();
     }
 }
