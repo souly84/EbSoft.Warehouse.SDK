@@ -23,10 +23,10 @@ namespace EbSoft.Warehouse.SDK
             foreach (var confirmedGood in _confirmedGood)
             {
                 var confirmationData = confirmedGood.ToDictionary();
-                var goodData = confirmationData.Value<IGood>("Good").ToDictionary();
                 var confirmedQty = confirmationData.Value<int>("Confirmed");
                 if (confirmedQty > 0)
                 {
+                    var goodData = confirmationData.Value<IGood>("Good").ToDictionary();
                     var jObject = new JObject(
                         new JProperty("id", goodData.Value<string>("Id")),
                         new JProperty("qty", confirmedQty.ToString()),
