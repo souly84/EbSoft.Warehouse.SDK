@@ -19,7 +19,6 @@ namespace EbSoft.Warehouse.SDK
         {
         }
 
-
         public EbSoftCompany(IWebRequest server)
         {
             _server = server;
@@ -30,6 +29,8 @@ namespace EbSoft.Warehouse.SDK
         public IUsers Users => throw new NotImplementedException();
 
         public IWarehouse Warehouse => new EbSoftWarehouse(_server);
+
+        public ISuppliers Suppliers => new EbSoftSuppliers(_server);
 
         public Task<IUser> LoginAsync(string userName, string password)
         {

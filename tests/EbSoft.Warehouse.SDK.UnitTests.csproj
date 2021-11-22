@@ -17,13 +17,23 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-    <PackageReference Include="WebRequest.Elegant" Version="1.0.12" />
+    <PackageReference Include="WebRequest.Elegant" Version="1.0.12.2" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="WebRequest.Elegant" />
-  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\src\EbSoft.Warehouse.SDK.csproj" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <Content Include="Data\Suppliers.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\MieleReceptions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\MieleConfirmedGoods.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />

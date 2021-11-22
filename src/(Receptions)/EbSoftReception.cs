@@ -1,38 +1,44 @@
-﻿using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MediaPrint;
 using Warehouse.Core;
+using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftReception : IReception
+    public class EbSoftReception : IReception, IPrintable
     {
         private readonly IWebRequest _server;
-        private readonly JToken _ebSoftReception;
+        private readonly string _receptionId;
+        private IGoods _goods;
 
         public EbSoftReception(
             IWebRequest server,
-            JToken ebSoftReception)
+            string receptionId)
         {
             _server = server;
-            _ebSoftReception = ebSoftReception;
+            _receptionId = receptionId;
         }
 
-        public IGoods Goods => new EbSoftStockGoods(_server, _ebSoftReception.Value<string>("id"));
+        public IGoods Goods => _goods ?? (_goods = new EbSoftStockGoods(
+            _server,
+            _receptionId).Cached()
+        );
 
-        public Task ConfirmAsync(IGood good)
+        public void PrintTo(IMedia media)
         {
-            return Task.CompletedTask;
+            media
+                .Put("ReceptionId", _receptionId)
+                .Put("Goods", Goods);
         }
 
-        public Task ValidateAsync()
+        public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
         {
-            return Task.CompletedTask;
-        }
-
-        public override string ToString()
-        {
-            return _ebSoftReception.ToString();
+            return _server
+                .WithRelativePath("/reception/validation")
+                .WithBody(new ReceptionConfirmationAsJsonBody(goodsToValidate))
+                .EnsureSuccessAsync();
         }
     }
 }
