@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
+using Warehouse.Core;
 using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
@@ -8,19 +9,33 @@ namespace EbSoft.Warehouse.SDK
 {
     public class ReceptionConfirmationAsJsonBody : IJsonObject
     {
-        private readonly IList<IGoodConfirmation> _goodsToValidate;
+        private readonly IList<IGoodConfirmation> _confirmedGood;
 
-        public ReceptionConfirmationAsJsonBody(IList<IGoodConfirmation> goodsToValidate)
+        public ReceptionConfirmationAsJsonBody(IList<IGoodConfirmation> confirmedGoods)
         {
-            _goodsToValidate = goodsToValidate;
+            _confirmedGood = confirmedGoods;
         }
 
         public string ToJson()
         {
             var array = new JArray();
-            foreach (var good in _goodsToValidate)
+
+            foreach (var confirmedGood in _confirmedGood)
             {
-                array.Add(good.ToJson().ToString());
+                var confirmationData = confirmedGood.ToDictionary();
+                var goodData = confirmationData.Value<IGood>("Good").ToDictionary();
+                var confirmedQty = confirmationData.Value<int>("Confirmed");
+                if (confirmedQty > 0)
+                {
+                    var jObject = new JObject(
+                        new JProperty("id", goodData.Value<string>("Id")),
+                        new JProperty("qty", confirmedQty.ToString()),
+                        new JProperty("gtin", goodData.Value<string>("Ean")),
+                        new JProperty("error_code", null)
+                    );
+                    array.Add(jObject);
+                }
+               
             }
             return array.ToString();
         }

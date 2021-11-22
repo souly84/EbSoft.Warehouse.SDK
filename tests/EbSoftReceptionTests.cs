@@ -1,8 +1,11 @@
 ﻿using System.Configuration;
+using System.IO;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
+using Warehouse.Core.Receptions;
 using Xunit;
+using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
 {
@@ -35,106 +38,103 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_FullConfirmation()
         {
+            var ebSoftServer = new FakeBackend();
             var reception = await new EbSoftCompanyReception(
-                new FakeBackend().ToWebRequest()
+                ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
 
-            reception = await reception.FullyConfirmedAsync();
-            //Assert.True(
-            //     await reception.()
-            //);
+            await reception.FullyConfirmedAsync();
+            Assert.EqualJsonArrays(
+                File.ReadAllText("./Data/MieleConfirmedGoods.json"),
+                ebSoftServer.Proxy.RequestsContent[2]
+            );
         }
 
-        //[Fact]
-        //public async Task Reception_Confirmation_AddByGood()
-        //{
-        //    var goodToConfirm = new MockGood("good1", 4);
-        //    await new MockReception(
-        //        goodToConfirm,
-        //        new MockGood("good2", 8)
-        //    ).Confirmation().AddAsync(goodToConfirm);
-        //    Assert.EqualJson(
-        //        @"{
-        //            ""Good"":
-        //            {
-        //                ""Id"": ""good1"",
-        //                ""Barcode"": null
-        //            },
-        //            ""Total"": ""4"",
-        //            ""Confirmed"": ""1""
-        //        }",
-        //        goodToConfirm.Confirmation.ToJson().ToString()
-        //    );
-        //}
+        [Fact]
+        public async Task Reception_Confirmation_AddByGood()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            var goods = await reception.Goods.ToListAsync();
+            await reception.Confirmation().AddAsync(goods[0]);
+            await reception.Confirmation().AddAsync(goods[0]);
+            await reception.Confirmation().CommitAsync();
+            Assert.EqualJsonArrays(
+                @"[
+                  {
+                    ""id"": ""30"",
+                    ""qty"": ""2"",
+                    ""gtin"": ""4002516315155"",
+                    ""error_code"": null
+                  }
+                ]",
+                 ebSoftServer.Proxy.RequestsContent[2]
+            );
+        }
 
-        //[Fact]
-        //public async Task Reception_Confirmation_RemoveByGood()
-        //{
-        //    var goodToConfirm = new MockGood("good1", 4);
-        //    var confirmation = new MockReception(
-        //        goodToConfirm,
-        //        new MockGood("good2", 8)
-        //    ).Confirmation();
-        //    await confirmation.AddAsync(goodToConfirm);
-        //    await confirmation.RemoveAsync(goodToConfirm);
-        //    Assert.EqualJson(
-        //        @"{
-        //            ""Good"":
-        //            {
-        //                ""Id"": ""good1"",
-        //                ""Barcode"": null
-        //            },
-        //            ""Total"": ""4"",
-        //            ""Confirmed"": ""0""
-        //        }",
-        //        goodToConfirm.Confirmation.ToJson().ToString()
-        //    );
-        //}
+        [Fact]
+        public async Task Reception_Confirmation_RemoveByGood()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            var goods = await reception.Goods.ToListAsync();
+            await reception.Confirmation().AddAsync(goods[0]);
+            await reception.Confirmation().AddAsync(goods[0]);
+            await reception.Confirmation().RemoveAsync(goods[0]);
+            await reception.Confirmation().CommitAsync();
+            Assert.EqualJsonArrays(
+                @"[
+                  {
+                    ""id"": ""30"",
+                    ""qty"": ""1"",
+                    ""gtin"": ""4002516315155"",
+                    ""error_code"": null
+                  }
+                ]",
+                 ebSoftServer.Proxy.RequestsContent[2]
+            );
+        }
 
-        //[Fact]
-        //public async Task Reception_Confirmation_AddByGoodBarcode()
-        //{
-        //    var goodToConfirm = new MockGood("good1", 4, "360600");
-        //    await new MockReception(
-        //        goodToConfirm,
-        //        new MockGood("good2", 8)
-        //    ).Confirmation().AddAsync("360600");
-        //    Assert.EqualJson(
-        //        @"{
-        //            ""Good"":
-        //            {
-        //                ""Id"": ""good1"",
-        //                ""Barcode"": ""360600""
-        //            },
-        //            ""Total"": ""4"",
-        //            ""Confirmed"": ""1""
-        //        }",
-        //        goodToConfirm.Confirmation.ToJson().ToString()
-        //    );
-        //}
+        [Fact]
+        public async Task Reception_Confirmation_AddByGoodBarcode()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            await reception.Confirmation().AddAsync("4002515996744");
+            await reception.Confirmation().CommitAsync();
+            Assert.EqualJsonArrays(
+                @"[
+                  {
+                    ""id"": ""23"",
+                    ""qty"": ""1"",
+                    ""gtin"": ""4002515996744"",
+                    ""error_code"": null
+                  }
+                ]",
+                 ebSoftServer.Proxy.RequestsContent[2]
+            );
+        }
 
-        //[Fact]
-        //public async Task Reception_Confirmation_RemoveByGoodBarcode()
-        //{
-        //    var goodToConfirm = new MockGood("good1", 4, "360600");
-        //    var confirmation = new MockReception(
-        //        goodToConfirm,
-        //        new MockGood("good2", 8)
-        //    ).Confirmation();
-        //    await confirmation.AddAsync(goodToConfirm);
-        //    await confirmation.RemoveAsync("360600");
-        //    Assert.EqualJson(
-        //        @"{
-        //            ""Good"":
-        //            {
-        //                ""Id"": ""good1"",
-        //                ""Barcode"": ""360600""
-        //            },
-        //            ""Total"": ""4"",
-        //            ""Confirmed"": ""0""
-        //        }",
-        //        goodToConfirm.Confirmation.ToJson().ToString()
-        //    );
-        //}
+        [Fact]
+        public async Task Reception_Confirmation_RemoveByGoodBarcode()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            await reception.Confirmation().AddAsync("4002515996744");
+            await reception.Confirmation().RemoveAsync("4002515996744");
+            await reception.Confirmation().CommitAsync();
+            Assert.EqualJsonArrays(
+                @"[]",
+                 ebSoftServer.Proxy.RequestsContent[2]
+            );
+        }
     }
 }
