@@ -38,7 +38,7 @@ namespace EbSoft.Warehouse.SDK
                 (item) => item.Value<string>("nom")
             ).ToDictionary();
             return bySupplierName.Values
-                .Select(suppliers => new EbSoftSupplier(_server, suppliers))
+                .Select(receptions => new EbSoftSupplier(_server, receptions))
                 .ToList<ISupplier>();
         }
     }

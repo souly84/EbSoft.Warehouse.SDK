@@ -35,7 +35,10 @@ namespace EbSoft.Warehouse.SDK
 
         public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
         {
-            throw new System.NotImplementedException();
+            return _server
+                .WithRelativePath("/reception/validation")
+                .WithBody(new ReceptionConfirmationAsJsonBody(goodsToValidate))
+                .EnsureSuccessAsync();
         }
     }
 }
