@@ -18,7 +18,7 @@ namespace EbSoft.Warehouse.SDK
             _receptionsList = receptionsList;
         }
 
-        public IReceptions Receptions => new EbSoftReceptions(
+        public IEntities<IReception> Receptions => new EbSoftReceptions(
             _server,
             _receptionsList
         );

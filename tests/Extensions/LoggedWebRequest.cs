@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebRequest.Elegant;
@@ -19,13 +18,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             _testOutputHelper = testOutputHelper;
         }
 
-        public IToken Token => _origin.Token;
-
-        public Uri Uri => _origin.Uri;
-
-        public HttpMethod HttpMethod => _origin.HttpMethod;
-
-        public IBodyContent Body => _origin.Body;
+        public IUri Uri => _origin.Uri;
 
         public IWebRequest WithBody(IBodyContent postBody)
         {
@@ -46,7 +39,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             );
         }
 
-        public IWebRequest WithPath(Uri uri)
+        public IWebRequest WithPath(IUri uri)
         {
             return new LoggedWebRequest(
                 _origin.WithPath(uri),

@@ -13,6 +13,6 @@ namespace EbSoft.Warehouse.SDK
             _server = server;
         }
 
-        public IReceptions Receptions => throw new NotImplementedException();
+        public IEntities<IGood> Goods => throw new NotImplementedException();
     }
 }

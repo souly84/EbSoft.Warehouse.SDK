@@ -11,7 +11,7 @@ namespace EbSoft.Warehouse.SDK
     {
         private readonly IWebRequest _server;
         private readonly string _receptionId;
-        private IGoods _goods;
+        private IEntities<IGood> _goods;
 
         public EbSoftReception(
             IWebRequest server,
@@ -21,7 +21,7 @@ namespace EbSoft.Warehouse.SDK
             _receptionId = receptionId;
         }
 
-        public IGoods Goods => _goods ?? (_goods = new EbSoftStockGoods(
+        public IEntities<IGood> Goods => _goods ?? (_goods = new EbSoftStockGoods(
             _server,
             _receptionId).Cached()
         );

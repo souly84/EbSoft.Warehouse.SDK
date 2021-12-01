@@ -7,7 +7,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftReceptionsTests
     {
-        private ISuppliers _ebSoftSuppliers = new EbSoftCompany(
+        private IEntities<ISupplier> _ebSoftSuppliers = new EbSoftCompany(
              ConfigurationManager.AppSettings["companyUri"]
         ).Suppliers;
 

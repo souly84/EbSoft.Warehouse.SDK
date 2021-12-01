@@ -6,7 +6,7 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftStockGoods : IGoods
+    public class EbSoftStockGoods : IEntities<IGood>
     {
         private readonly IWebRequest _server;
         private readonly IFilter _filter;
@@ -33,7 +33,7 @@ namespace EbSoft.Warehouse.SDK
                 .SelectAsync<IGood>((good) => new EbSoftGood(_server, good));
         }
 
-        public IGoods With(IFilter filter)
+        public IEntities<IGood> With(IFilter filter)
         {
             return new EbSoftStockGoods(_server, filter);
         }

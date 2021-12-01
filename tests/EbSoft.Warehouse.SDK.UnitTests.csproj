@@ -17,7 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-    <PackageReference Include="WebRequest.Elegant" Version="1.0.12.2" />
+    <PackageReference Include="WebRequest.Elegant" Version="1.1.0" />
   </ItemGroup>
   
   <ItemGroup>

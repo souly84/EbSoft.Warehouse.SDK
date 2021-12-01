@@ -24,18 +24,17 @@ namespace EbSoft.Warehouse.SDK
             _server = server;
         }
 
-        public ICustomers Customers => throw new NotImplementedException();
+        public IEntities<ICustomer> Customers => throw new NotImplementedException();
 
-        public IUsers Users => throw new NotImplementedException();
+        public IEntities<IUser> Users => throw new NotImplementedException();
 
         public IWarehouse Warehouse => new EbSoftWarehouse(_server);
 
-        public ISuppliers Suppliers => new EbSoftSuppliers(_server);
+        public IEntities<ISupplier> Suppliers => new EbSoftSuppliers(_server);
 
         public Task<IUser> LoginAsync(string userName, string password)
         {
             throw new EbSoftInvalidLoginException("Not implemented");
-
         }
     }
 }

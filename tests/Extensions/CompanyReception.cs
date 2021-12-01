@@ -7,7 +7,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
 {
     public class EbSoftCompanyReception
     {
-        private ISuppliers _ebSoftSuppliers;
+        private IEntities<ISupplier> _ebSoftSuppliers;
         
         public EbSoftCompanyReception()
             : this(ConfigurationManager.AppSettings["companyUri"])

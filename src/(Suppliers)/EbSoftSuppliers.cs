@@ -8,7 +8,7 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftSuppliers : ISuppliers
+    public class EbSoftSuppliers : IEntities<ISupplier>
     {
         private readonly IWebRequest _server;
         private readonly IFilter _filter;
@@ -24,7 +24,7 @@ namespace EbSoft.Warehouse.SDK
             _filter = filter;
         }
 
-        public ISuppliers With(IFilter filter)
+        public IEntities<ISupplier> With(IFilter filter)
         {
             return new EbSoftSuppliers(_server, filter);
         }
