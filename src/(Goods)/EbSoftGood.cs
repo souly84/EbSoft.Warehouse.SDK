@@ -1,4 +1,5 @@
-﻿using MediaPrint;
+﻿using System;
+using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using Warehouse.Core.Goods;
@@ -6,7 +7,7 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftGood : IGood, IPrintable
+    public class EbSoftGood : IGood, IEquatable<string>, IEquatable<int>
     {
         private readonly IWebRequest _server;
         private readonly JObject _ebSoftGood;
@@ -20,8 +21,6 @@ namespace EbSoft.Warehouse.SDK
             _ebSoftGood = ebSoftGood;
         }
 
-        public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity));
-
         private int Id => _ebSoftGood.Value<int>("id");
 
         private string Barcode => _ebSoftGood.Value<string>("ean");
@@ -30,21 +29,13 @@ namespace EbSoft.Warehouse.SDK
 
         private string ItemType => _ebSoftGood.Value<string>("itemType");
 
-        private int Quantity => _ebSoftGood.Value<int>("qt");
+        public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity));
+       
+        public int Quantity => _ebSoftGood.Value<int>("qt");
 
-        public override bool Equals(object obj)
-        {
-            return object.ReferenceEquals(obj, this)
-                || TheSameId(obj)
-                || TheSameBarcode(obj)
-                || TheSameArticle(obj)
-                || TheSameType(obj);
-        }
+        public IEntities<IStorage> Storages => throw new System.NotImplementedException();
 
-        public override int GetHashCode()
-        {
-            return _ebSoftGood.Value<int>("id");
-        }
+        public IMovement Movement => new EbSoftGoodMovement(_server, this);
 
         public void PrintTo(IMedia media)
         {
@@ -57,24 +48,28 @@ namespace EbSoft.Warehouse.SDK
                 .Put("ItemType", ItemType);
         }
 
-        private bool TheSameBarcode(object obj)
+        public override bool Equals(object obj)
         {
-            return obj is string barcode && barcode == Barcode;
+            return object.ReferenceEquals(obj, this)
+                || obj is string data && Equals(data)
+                || obj is int id && Equals(id);
         }
 
-        private bool TheSameType(object obj)
+        public bool Equals(string data)
         {
-            return obj is string itemType && itemType == ItemType;
+            return data == Barcode
+                || data == Article
+                || data == ItemType;
         }
 
-        private bool TheSameArticle(object obj)
+        public bool Equals(int id)
         {
-            return obj is string article && article == Article;
+            return id == Id;
         }
 
-        private bool TheSameId(object obj)
+        public override int GetHashCode()
         {
-            return obj is int id && id == Id;
+            return HashCode.Combine(Id);
         }
     }
 }
