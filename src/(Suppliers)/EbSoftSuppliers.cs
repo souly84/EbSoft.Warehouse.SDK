@@ -14,7 +14,7 @@ namespace EbSoft.Warehouse.SDK
         private readonly IFilter _filter;
 
         public EbSoftSuppliers(IWebRequest server)
-            : this(server, new SuppliersFilter())
+            : this(server, new SuppliersByDateFilter())
         {
         }
 

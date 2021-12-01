@@ -3,11 +3,11 @@ using Warehouse.Core;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class GoodsFilter : IFilter
+    public class ReceptionsGoodsFilter : IFilter
     {
         private readonly string _receptionId;
 
-        public GoodsFilter(string receptionId)
+        public ReceptionsGoodsFilter(string receptionId)
         {
             _receptionId = receptionId;
         }

@@ -6,19 +6,19 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftStockGoods : IEntities<IGood>
+    public class EbSoftReceptionGoods : IEntities<IGood>
     {
         private readonly IWebRequest _server;
         private readonly IFilter _filter;
 
-        public EbSoftStockGoods(
+        public EbSoftReceptionGoods(
             IWebRequest server,
             string receptionId)
-            : this(server, new GoodsFilter(receptionId))
+            : this(server, new ReceptionsGoodsFilter(receptionId))
         {
         }
 
-        public EbSoftStockGoods(
+        public EbSoftReceptionGoods(
             IWebRequest server,
             IFilter filter)
         {
@@ -30,12 +30,12 @@ namespace EbSoft.Warehouse.SDK
         {
             return _server
                 .WithFilter(_filter)
-                .SelectAsync<IGood>((good) => new EbSoftGood(_server, good));
+                .SelectAsync<IGood>((good) => new EbSoftReceptionGood(_server, good));
         }
 
         public IEntities<IGood> With(IFilter filter)
         {
-            return new EbSoftStockGoods(_server, filter);
+            return new EbSoftReceptionGoods(_server, filter);
         }
     }
 }

@@ -7,13 +7,14 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftGood : IGood, IEquatable<string>, IEquatable<int>
+    public class EbSoftReceptionGood : IGood, IEquatable<string>, IEquatable<int>
     {
         private readonly IWebRequest _server;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
+        private IEntities<IStorage> _storages;
 
-        public EbSoftGood(
+        public EbSoftReceptionGood(
             IWebRequest server,
             JObject ebSoftGood)
         {
@@ -33,7 +34,7 @@ namespace EbSoft.Warehouse.SDK
        
         public int Quantity => _ebSoftGood.Value<int>("qt");
 
-        public IEntities<IStorage> Storages => throw new System.NotImplementedException();
+        public IEntities<IStorage> Storages => _storages ?? (_storages = new EbSoftGoodStorages(_server, this));
 
         public IMovement Movement => new EbSoftGoodMovement(_server, this);
 

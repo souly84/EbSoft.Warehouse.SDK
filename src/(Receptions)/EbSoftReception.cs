@@ -21,7 +21,7 @@ namespace EbSoft.Warehouse.SDK
             _receptionId = receptionId;
         }
 
-        public IEntities<IGood> Goods => _goods ?? (_goods = new EbSoftStockGoods(
+        public IEntities<IGood> Goods => _goods ?? (_goods = new EbSoftReceptionGoods(
             _server,
             _receptionId).Cached()
         );

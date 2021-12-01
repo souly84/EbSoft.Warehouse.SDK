@@ -24,6 +24,11 @@ namespace EbSoft.Warehouse.SDK.Extensions
             return JsonConvert.DeserializeObject<T>(content);
         }
 
+        public static IWebRequest WithBody(this IWebRequest request, JObject body)
+        {
+            return request.WithBody(new SimpleString(body.ToString()));
+        }
+
         public static async Task<IList<T>> SelectAsync<T>(
             this IWebRequest request,
             Func<JObject, T> map)
