@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.UnitTests;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -7,7 +8,6 @@ namespace EbSoft.Warehouse.SDK.Tests
 {
     public class EbSoftCompanyTests
     {
-        private const string _azureDevOpsSkipReason = null;
         private EbSoftCompany _ebSoftCompany = new EbSoftCompany(
              ConfigurationManager.AppSettings["companyUri"]
         );
@@ -26,7 +26,7 @@ namespace EbSoft.Warehouse.SDK.Tests
             );
         }
 
-        [Fact(Skip = _azureDevOpsSkipReason)]
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public Task UnsuccesfullLogin()
         {
             return Assert.ThrowsAsync<EbSoftInvalidLoginException>(

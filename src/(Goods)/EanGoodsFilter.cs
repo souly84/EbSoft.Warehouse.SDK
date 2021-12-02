@@ -4,11 +4,11 @@ using Warehouse.Core;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class StorageGoodsFilter : IFilter
+    public class EanGoodsFilter : IFilter
     {
         private readonly string _goodEan;
 
-        public StorageGoodsFilter(string goodEan)
+        public EanGoodsFilter(string goodEan)
         {
             if (string.IsNullOrEmpty(goodEan))
             {

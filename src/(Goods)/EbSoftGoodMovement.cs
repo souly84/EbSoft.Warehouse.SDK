@@ -21,7 +21,10 @@ namespace EbSoft.Warehouse.SDK
         {
         }
 
-        public EbSoftGoodMovement(IWebRequest server, IGood good, IStorage fromStorage)
+        public EbSoftGoodMovement(
+            IWebRequest server,
+            IGood good,
+            IStorage fromStorage)
         {
             _server = server;
             _good = good;

@@ -14,7 +14,7 @@ namespace EbSoft.Warehouse.SDK
         private readonly IFilter _filter;
 
         public EbSoftGoodStorages(IWebRequest server, string goodEan)
-            : this(server, new StorageGoodsFilter(goodEan))
+            : this(server, new EanGoodsFilter(goodEan))
         {
         }
 

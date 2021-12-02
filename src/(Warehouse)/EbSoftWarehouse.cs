@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EbSoft.Warehouse.SDK.Warehouse;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -13,6 +13,9 @@ namespace EbSoft.Warehouse.SDK
             _server = server;
         }
 
-        public IEntities<IGood> Goods => throw new NotImplementedException();
+        public IEntities<IGood> Goods => new EbSoftWarehouseGoods(
+            _server,
+            new NotWarehouseInitializedFilter()
+        );
     }
 }

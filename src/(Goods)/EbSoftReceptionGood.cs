@@ -7,7 +7,7 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftReceptionGood : IGood, IEquatable<string>, IEquatable<int>
+    public sealed class EbSoftReceptionGood : IGood, IEquatable<string>, IEquatable<int>
     {
         private readonly IWebRequest _server;
         private readonly string _receptionId;
