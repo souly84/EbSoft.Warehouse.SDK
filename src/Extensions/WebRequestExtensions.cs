@@ -13,15 +13,28 @@ namespace EbSoft.Warehouse.SDK.Extensions
     {
         public static async Task<T> ReadAsync<T>(this IWebRequest request)
         {
-            var content = await request
-               .ReadAsStringAsync()
-               .ConfigureAwait(false);
-            if (typeof(T) == typeof(string))
+            string content = string.Empty;
+            try
             {
-                return (T)(object)content;
-            }
+                content = await request
+                   .ReadAsStringAsync()
+                   .ConfigureAwait(false);
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)content;
+                }
 
-            return JsonConvert.DeserializeObject<T>(content);
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception ex)
+            {
+                var invalidOperationException = new InvalidOperationException(
+                    $"Web Request error occured for {request}",
+                    ex
+                );
+                invalidOperationException.Data["Content"] = content;
+                throw invalidOperationException;
+            }
         }
 
         public static IWebRequest WithBody(this IWebRequest request, JObject body)

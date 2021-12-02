@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MediaPrint;
+﻿using System;
+using System.Collections.Generic;
 using Warehouse.Core;
 
 namespace EbSoft.Warehouse.SDK
@@ -8,13 +8,12 @@ namespace EbSoft.Warehouse.SDK
     {
         private readonly string _goodEan;
 
-        public StorageGoodsFilter(IGood good)
-            : this(good.ToDictionary().Value<string>("Ean"))
-        {
-        }
-
         public StorageGoodsFilter(string goodEan)
         {
+            if (string.IsNullOrEmpty(goodEan))
+            {
+                throw new ArgumentNullException(nameof(goodEan));
+            }
             _goodEan = goodEan;
         }
 
