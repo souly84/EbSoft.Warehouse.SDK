@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.Extensions;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -19,7 +19,9 @@ namespace EbSoft.Warehouse.SDK.Warehouse
 
         public Task<IList<IGood>> ToListAsync()
         {
-            throw new NotImplementedException();
+            return _server
+               .WithFilter(_filter)
+               .SelectAsync<IGood>((good) => new EbSoftWarehouseGood(_server, good));
         }
 
         public IEntities<IGood> With(IFilter filter)

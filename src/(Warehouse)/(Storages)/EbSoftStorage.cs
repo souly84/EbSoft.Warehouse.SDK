@@ -9,7 +9,9 @@ namespace EbSoft.Warehouse.SDK
 {
     public class EbSoftStorage : IStorage
     {
-        public EbSoftStorage(IWebRequest server, JObject storage)
+        public EbSoftStorage(
+            IWebRequest server,
+            JObject storage)
         {
         }
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
+﻿using System.Configuration;
 using System.Threading.Tasks;
-using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
 using Xunit;
 
@@ -19,9 +16,36 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("")
+                .Goods.For("4002516315155")
                 .FirstAsync();
-            Xunit.Assert.NotEmpty(
+            Assert.NotEmpty(
+                await good.Storages.ToListAsync()
+            );
+        }
+
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task StockMovement()
+        {
+            var good = await _ebSoftCompany
+                .Warehouse
+                .Goods.For("4002516315155")
+                .FirstAsync();
+            await good.Movement.MoveToAsync(new MockStorage(), 5);
+            Assert.NotEmpty(
+                await good.Storages.ToListAsync()
+            );
+        }
+
+
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task PutAway()
+        {
+            var good = await _ebSoftCompany
+                .Warehouse
+                .Goods.For("4002516315155")
+                .FirstAsync();
+            await good.Movement.MoveToAsync(new MockStorage(), 5);
+            Assert.NotEmpty(
                 await good.Storages.ToListAsync()
             );
         }
