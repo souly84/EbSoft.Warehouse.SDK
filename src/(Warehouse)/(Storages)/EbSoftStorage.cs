@@ -15,14 +15,14 @@ namespace EbSoft.Warehouse.SDK
         {
         }
 
-        public IEntities<IGood> Goods => throw new NotImplementedException();
+        public IEntities<IWarehouseGood> Goods => throw new NotImplementedException();
 
-        public Task DecreaseAsync(IGood good, int quantity)
+        public Task DecreaseAsync(IWarehouseGood good, int quantity)
         {
             throw new NotImplementedException();
         }
 
-        public Task IncreaseAsync(IGood good, int quantity)
+        public Task IncreaseAsync(IWarehouseGood good, int quantity)
         {
             throw new NotImplementedException();
         }

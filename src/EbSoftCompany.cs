@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MediaPrint;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -35,6 +36,15 @@ namespace EbSoft.Warehouse.SDK
         public Task<IUser> LoginAsync(string userName, string password)
         {
             throw new EbSoftInvalidLoginException("Not implemented");
+        }
+
+        public void PrintTo(IMedia media)
+        {
+            media
+                .Put("Customers", Customers)
+                .Put("Users", Users)
+                .Put("Warehouse", Warehouse)
+                .Put("Suppliers", Suppliers);
         }
     }
 }

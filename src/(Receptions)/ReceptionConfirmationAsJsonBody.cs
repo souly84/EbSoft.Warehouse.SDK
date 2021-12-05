@@ -26,7 +26,7 @@ namespace EbSoft.Warehouse.SDK
                 var confirmedQty = confirmationData.Value<int>("Confirmed");
                 if (confirmedQty > 0)
                 {
-                    var goodData = confirmationData.Value<IGood>("Good").ToDictionary();
+                    var goodData = confirmationData.Value<IReceptionGood>("Good").ToDictionary();
                     var jObject = new JObject(
                         new JProperty("id", goodData.Value<string>("Id")),
                         new JProperty("qty", confirmedQty.ToString()),

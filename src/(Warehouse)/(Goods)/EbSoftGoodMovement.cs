@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
 using Warehouse.Core.Goods.Storages;
 using WebRequest.Elegant;
 using EbSoft.Warehouse.SDK.Extensions;
@@ -13,17 +12,17 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftGoodMovement : IMovement
     {
         private readonly IWebRequest _server;
-        private readonly IGood _good;
+        private readonly IWarehouseGood _good;
         private readonly IStorage _fromStorage;
 
-        public EbSoftGoodMovement(IWebRequest server, IGood good)
+        public EbSoftGoodMovement(IWebRequest server, IWarehouseGood good)
             : this(server, good, new IncorrectStorage())
         {
         }
 
         public EbSoftGoodMovement(
             IWebRequest server,
-            IGood good,
+            IWarehouseGood good,
             IStorage fromStorage)
         {
             _server = server;

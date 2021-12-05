@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
-using Warehouse.Core.Receptions;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 

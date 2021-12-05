@@ -2,18 +2,16 @@
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public sealed class EbSoftReceptionGood : IGood, IEquatable<string>, IEquatable<int>
+    public sealed class EbSoftReceptionGood : IReceptionGood, IEquatable<string>, IEquatable<int>
     {
         private readonly IWebRequest _server;
         private readonly string _receptionId;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
-        private IEntities<IStorage> _storages;
 
         public EbSoftReceptionGood(
             IWebRequest server,
@@ -36,27 +34,6 @@ namespace EbSoft.Warehouse.SDK
         public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity));
        
         public int Quantity => _ebSoftGood.Value<int>("qt");
-
-        public IEntities<IStorage> Storages
-        {
-            get
-            {
-                if (_storages == null)
-                {
-                    if (string.IsNullOrEmpty(Ean))
-                    {
-                        throw new InvalidOperationException(
-                            $"Good does not contain Ean\n{this.ToJson()}"
-                        );
-                    }
-
-                    _storages = new EbSoftGoodStorages(_server, Ean);
-                }
-                return _storages;
-            }
-        }
-
-        public IMovement Movement => new EbSoftGoodMovement(_server, this);
 
         public void PrintTo(IMedia media)
         {

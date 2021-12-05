@@ -2,12 +2,11 @@
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK.Warehouse
 {
-    public class EbSoftWarehouseGood : IGood
+    public class EbSoftWarehouseGood : IWarehouseGood
     {
         private readonly IWebRequest _server;
         private readonly JObject _good;
@@ -20,8 +19,6 @@ namespace EbSoft.Warehouse.SDK.Warehouse
         }
 
         public int Quantity => throw new System.NotImplementedException();
-
-        public IGoodConfirmation Confirmation => throw new System.NotImplementedException();
 
         public IEntities<IStorage> Storages
         {

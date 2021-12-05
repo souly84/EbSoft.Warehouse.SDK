@@ -37,9 +37,14 @@ namespace EbSoft.Warehouse.SDK
                     .ReadAsync<List<JObject>>(),
                 (item) => item.Value<string>("nom")
             ).ToDictionary();
-            return bySupplierName.Values
-                .Select(receptions => new EbSoftSupplier(_server, receptions))
-                .ToList<ISupplier>();
+            return bySupplierName.Keys
+                .Select(supplierName =>
+                    new EbSoftSupplier(
+                        _server,
+                        supplierName,
+                        bySupplierName[supplierName]
+                    )
+                ).ToList<ISupplier>();
         }
     }
 }

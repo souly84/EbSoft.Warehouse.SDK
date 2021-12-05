@@ -1,4 +1,5 @@
 ﻿using EbSoft.Warehouse.SDK.Warehouse;
+using MediaPrint;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -13,9 +14,14 @@ namespace EbSoft.Warehouse.SDK
             _server = server;
         }
 
-        public IEntities<IGood> Goods => new EbSoftWarehouseGoods(
+        public IEntities<IWarehouseGood> Goods => new EbSoftWarehouseGoods(
             _server,
             new NotWarehouseInitializedFilter()
         );
+
+        public void PrintTo(IMedia media)
+        {
+            media.Put("Goods", Goods);
+        }
     }
 }

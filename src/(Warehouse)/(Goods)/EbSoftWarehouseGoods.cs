@@ -6,7 +6,7 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK.Warehouse
 {
-    public class EbSoftWarehouseGoods : IEntities<IGood>
+    public class EbSoftWarehouseGoods : IEntities<IWarehouseGood>
     {
         private readonly IWebRequest _server;
         private readonly IFilter _filter;
@@ -17,14 +17,14 @@ namespace EbSoft.Warehouse.SDK.Warehouse
             _filter = filter;
         }
 
-        public Task<IList<IGood>> ToListAsync()
+        public Task<IList<IWarehouseGood>> ToListAsync()
         {
             return _server
                .WithFilter(_filter)
-               .SelectAsync<IGood>((good) => new EbSoftWarehouseGood(_server, good));
+               .SelectAsync<IWarehouseGood>((good) => new EbSoftWarehouseGood(_server, good));
         }
 
-        public IEntities<IGood> With(IFilter filter)
+        public IEntities<IWarehouseGood> With(IFilter filter)
         {
             return new EbSoftWarehouseGoods(_server, filter);
         }
