@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
@@ -26,15 +27,11 @@ namespace EbSoft.Warehouse.SDK.Warehouse
             {
                 if (_storages == null)
                 {
-                    var ean = _good.Value<string>("ean");
-                    if (string.IsNullOrEmpty(ean))
-                    {
-                        throw new InvalidOperationException(
-                            $"Good does not contain Ean\n{_good}"
-                        );
-                    }
-
-                    _storages = new EbSoftGoodStorages(_server, ean);
+                    _storages = new ListOfEntities<IStorage>(
+                        _good
+                            .Value<JArray>("locations")
+                            .Select(storage => new EbSoftStorage(_server, (JObject)storage))
+                    );
                 }
                 return _storages;
             }
@@ -44,7 +41,10 @@ namespace EbSoft.Warehouse.SDK.Warehouse
 
         public void PrintTo(IMedia media)
         {
-            throw new System.NotImplementedException();
+            media
+                .Put("Data", _good)
+                .Put("Storages", Storages)
+                .Put("Movement", Movement);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Core;
 using Xunit;
@@ -30,7 +31,10 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .Warehouse
                 .Goods.For("4002516315155")
                 .FirstAsync();
-            await good.Movement.MoveToAsync(new MockStorage(), 5);
+            var goodStorages = await good.Storages.ToListAsync();
+            await good.Movement
+                .From(goodStorages.First())
+                .MoveToAsync(goodStorages.Last(), 5);
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
             );

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.Extensions;
+using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -17,11 +18,15 @@ namespace EbSoft.Warehouse.SDK.Warehouse
             _filter = filter;
         }
 
-        public Task<IList<IWarehouseGood>> ToListAsync()
+        public async Task<IList<IWarehouseGood>> ToListAsync()
         {
-            return _server
+            var good = await _server
                .WithFilter(_filter)
-               .SelectAsync<IWarehouseGood>((good) => new EbSoftWarehouseGood(_server, good));
+               .ReadAsync<JObject>();
+            return new List<IWarehouseGood>
+            {
+                new EbSoftWarehouseGood(_server, good)
+            };
         }
 
         public IEntities<IWarehouseGood> With(IFilter filter)
