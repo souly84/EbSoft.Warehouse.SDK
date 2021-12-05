@@ -52,7 +52,7 @@ namespace EbSoft.Warehouse.SDK
                     new JProperty("ean", ean),
                     new JProperty("origin", "originStoreNumber"),
                     new JProperty("destination", "targetstoreNumber"),
-                    new JProperty("quantity", ean)
+                    new JProperty("quantity", quantity)
                 )
             ).EnsureSuccessAsync();
         }

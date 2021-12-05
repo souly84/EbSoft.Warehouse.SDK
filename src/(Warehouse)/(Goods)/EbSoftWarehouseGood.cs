@@ -1,4 +1,5 @@
-﻿using MediaPrint;
+﻿using System;
+using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using Warehouse.Core.Goods;
@@ -10,6 +11,7 @@ namespace EbSoft.Warehouse.SDK.Warehouse
     {
         private readonly IWebRequest _server;
         private readonly JObject _good;
+        private IEntities<IStorage> _storages;
 
         public EbSoftWarehouseGood(IWebRequest server, JObject good)
         {
@@ -21,9 +23,27 @@ namespace EbSoft.Warehouse.SDK.Warehouse
 
         public IGoodConfirmation Confirmation => throw new System.NotImplementedException();
 
-        public IEntities<IStorage> Storages => throw new System.NotImplementedException();
+        public IEntities<IStorage> Storages
+        {
+            get
+            {
+                if (_storages == null)
+                {
+                    var ean = _good.Value<string>("ean");
+                    if (string.IsNullOrEmpty(ean))
+                    {
+                        throw new InvalidOperationException(
+                            $"Good does not contain Ean\n{_good}"
+                        );
+                    }
 
-        public IMovement Movement => throw new System.NotImplementedException();
+                    _storages = new EbSoftGoodStorages(_server, ean);
+                }
+                return _storages;
+            }
+        }
+
+        public IMovement Movement => new EbSoftGoodMovement(_server, this);
 
         public void PrintTo(IMedia media)
         {
