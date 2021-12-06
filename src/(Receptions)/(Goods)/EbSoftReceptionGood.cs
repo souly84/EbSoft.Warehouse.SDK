@@ -2,23 +2,19 @@
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
     public sealed class EbSoftReceptionGood : IReceptionGood, IEquatable<string>, IEquatable<int>
     {
-        private readonly IWebRequest _server;
         private readonly string _receptionId;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
 
         public EbSoftReceptionGood(
-            IWebRequest server,
             string receptionId,
             JObject ebSoftGood)
         {
-            _server = server;
             _receptionId = receptionId;
             _ebSoftGood = ebSoftGood;
         }

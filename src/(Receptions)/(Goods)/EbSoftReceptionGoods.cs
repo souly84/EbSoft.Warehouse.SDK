@@ -37,7 +37,7 @@ namespace EbSoft.Warehouse.SDK
         {
             return _server
                 .WithFilter(_filter)
-                .SelectAsync<IReceptionGood>((good) => new EbSoftReceptionGood(_server, _receptionId, good));
+                .SelectAsync<IReceptionGood>((good) => new EbSoftReceptionGood(_receptionId, good));
         }
 
         public IEntities<IReceptionGood> With(IFilter filter)

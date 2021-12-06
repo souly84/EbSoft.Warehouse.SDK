@@ -49,8 +49,8 @@ namespace EbSoft.Warehouse.SDK
             }).WithBody(
                 new JObject(
                     new JProperty("ean", ean),
-                    new JProperty("origin", "originStoreNumber"),
-                    new JProperty("destination", "targetstoreNumber"),
+                    new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
+                    new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
                     new JProperty("quantity", quantity)
                 )
             ).EnsureSuccessAsync();
