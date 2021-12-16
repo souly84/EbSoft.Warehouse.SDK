@@ -10,7 +10,7 @@ namespace EbSoft.Warehouse.SDK
         {
         }
 
-        public EbSoftInvalidLoginException(SerializationInfo info, StreamingContext context)
+        protected EbSoftInvalidLoginException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
