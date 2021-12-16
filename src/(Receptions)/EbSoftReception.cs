@@ -35,7 +35,13 @@ namespace EbSoft.Warehouse.SDK
         public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
         {
             return _server
-                .WithRelativePath("/reception/validation")
+                .WithQueryParams(
+                    new Dictionary<string, string>
+                    {
+                        { "filter", "getCmrlines" },
+                    }
+                )
+                .WithMethod(System.Net.Http.HttpMethod.Post)
                 .WithBody(new ReceptionConfirmationAsJsonBody(goodsToValidate))
                 .EnsureSuccessAsync();
         }
