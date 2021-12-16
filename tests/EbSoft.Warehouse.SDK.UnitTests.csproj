@@ -34,7 +34,11 @@
     <Content Include="Data\MieleConfirmedGoods.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Product.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>

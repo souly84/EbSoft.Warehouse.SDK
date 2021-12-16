@@ -17,13 +17,16 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                 new RoutedHttpMessageHandler(
                     new Route(new Dictionary<string, string>
                     {
-                        { $"{root}/reception/validation", "Success" }
+                        { $"{root}?filter=setLinesCmr", "Success" }
                     }).With(
                         new Uri($"{root}?filter=getListCmr&date={suppliersFilterDate}"),
                         "./Data/Suppliers.json"
                     ).With(
                         new Uri($"{root}?filter=getCmrlines&id=5"),
                         "./Data/MieleReceptions.json"
+                    ).With(
+                        new Uri($"{root}?filter=getProduct&ean=4002516315155"),
+                        "./Data/Product.json"
                     )
                 )
             );

@@ -1,8 +1,11 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
 using Xunit;
+using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
 {
@@ -13,7 +16,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         );
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task GoodStorages()
+        public async Task GoodStoragesIntegration()
         {
             var good = await _ebSoftCompany
                 .Warehouse
@@ -21,6 +24,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .FirstAsync();
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
+            );
+        }
+
+        [Fact]
+        public async Task GoodStorages()
+        {
+            var good = await new EbSoftCompany(
+                new FakeBackend().ToWebRequest()
+            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            Assert.Equal(
+                2,
+                (await good.Storages.ToListAsync()).Count
             );
         }
 

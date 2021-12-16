@@ -38,7 +38,7 @@ namespace EbSoft.Warehouse.SDK
                 .WithQueryParams(
                     new Dictionary<string, string>
                     {
-                        { "filter", "getCmrlines" },
+                        { "filter", "setLinesCmr" },
                     }
                 )
                 .WithMethod(System.Net.Http.HttpMethod.Post)
