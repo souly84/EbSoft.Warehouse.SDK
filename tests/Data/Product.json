@@ -1,16 +1,21 @@
 ﻿{
-  "id": "704626",
-  "reference": "MIELE K7773D",
-  "description": "REFRIGERATEUR ENCASTRABLE  D 178CM NICHE PORTE SUR PORTE B PERFECTFRESHACT",
-  "fournisseur": "MIELE SA",
+  "id": "620474",
+  "ean": "4002516315155",
+  "reference": "NOVY 829",
+  "description": "HOTTE INTEGREE - 84CM",
+  "fournisseur": "NOVY",
   "locations": [
     {
-      "storage": "ZZ-ZZ-ZZ",
-      "quantity": "8"
+      "ean": "135332235624",
+      "idlocation": "1",
+      "location": "CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.L-0",
+      "quantity": "2"
     },
     {
-      "storage": "05-B8-5",
-      "quantity": "4"
+      "ean": "122334461809",
+      "idlocation": "4376",
+      "location": "ALLEE 126.16.3.L-0",
+      "quantity": "1"
     }
   ]
 }

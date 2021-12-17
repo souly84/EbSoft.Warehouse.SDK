@@ -9,10 +9,13 @@ namespace EbSoft.Warehouse.SDK
 {
     public class EbSoftStorage : IStorage
     {
+        private readonly JObject _storage;
+
         public EbSoftStorage(
             IWebRequest server,
             JObject storage)
         {
+            _storage = storage;
         }
 
         public IEntities<IWarehouseGood> Goods => throw new NotImplementedException();
@@ -29,7 +32,9 @@ namespace EbSoft.Warehouse.SDK
 
         public void PrintTo(IMedia media)
         {
-            throw new NotImplementedException();
+            media
+                .Put("Number", _storage.Value<string>("storage"))
+                .Put("Quantity", _storage.Value<int>("quantity"));
         }
     }
 }

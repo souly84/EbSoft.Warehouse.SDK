@@ -17,7 +17,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                 new RoutedHttpMessageHandler(
                     new Route(new Dictionary<string, string>
                     {
-                        { $"{root}?filter=setLinesCmr", "Success" }
+                        { $"{root}?filter=setLinesCmr", "Success" },
+                        { $"{root}?assignProductTo&ean=4002516315155", "Success" }
                     }).With(
                         new Uri($"{root}?filter=getListCmr&date={suppliersFilterDate}"),
                         "./Data/Suppliers.json"

@@ -6,6 +6,7 @@ using Warehouse.Core;
 using Warehouse.Core.Goods.Storages;
 using WebRequest.Elegant;
 using EbSoft.Warehouse.SDK.Extensions;
+using System.Net.Http;
 
 namespace EbSoft.Warehouse.SDK
 {
@@ -41,19 +42,21 @@ namespace EbSoft.Warehouse.SDK
 
         public Task MoveToAsync(IStorage storage, int quantity)
         {
-            var ean = _good.ToDictionary().Value<string>("Ean");
-            return _server.WithQueryParams(new Dictionary<string, string>
-            {
-                { "filter", "assignProductTo" },
-                { "ean", ean },
-            }).WithBody(
-                new JObject(
-                    new JProperty("ean", ean),
-                    new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
-                    new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
-                    new JProperty("quantity", quantity)
-                )
-            ).EnsureSuccessAsync();
+            var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("ean");
+            return _server
+                .WithMethod(HttpMethod.Post)
+                .WithQueryParams(new Dictionary<string, string>
+                {
+                    { "filter", "assignProductTo" },
+                    { "ean", ean },
+                }).WithBody(
+                    new JObject(
+                        new JProperty("ean", ean),
+                        new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
+                        new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
+                        new JProperty("quantity", quantity)
+                    )
+                ).EnsureSuccessAsync();
         }
     }
 }

@@ -39,8 +39,20 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             );
         }
 
+        [Fact]
+        public async Task GoodStoragesTotalQuantity()
+        {
+            var good = await new EbSoftCompany(
+                new FakeBackend().ToWebRequest()
+            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            Assert.Equal(
+                3,
+                good.Quantity
+            );
+        }
+
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task StockMovement()
+        public async Task StockMovementIntegration()
         {
             var good = await _ebSoftCompany
                 .Warehouse
@@ -55,6 +67,22 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             );
         }
 
+        [Fact]
+        public async Task StockMovement()
+        {
+            var backend = new FakeBackend();
+            var good = await new EbSoftCompany(
+                backend.ToWebRequest()
+            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            var goodStorages = await good.Storages.ToListAsync();
+            await good.Movement
+                .From(goodStorages.First())
+                .MoveToAsync(goodStorages.Last(), 5);
+            Assert.EqualJson(
+                "",
+                backend.Proxy.RequestsContent[1]
+            );
+        }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public async Task PutAway()

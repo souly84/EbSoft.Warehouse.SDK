@@ -19,7 +19,7 @@ namespace EbSoft.Warehouse.SDK.Warehouse
             _good = good;
         }
 
-        public int Quantity => throw new System.NotImplementedException();
+        public int Quantity => new GoodStoragesTotalQuantity(_good).ToInt();
 
         public IEntities<IStorage> Storages
         {
