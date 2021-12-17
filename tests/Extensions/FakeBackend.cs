@@ -11,14 +11,14 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
 
         public IWebRequest ToWebRequest()
         {
-            var root = "http://fake.company.com";
+            var root = new Uri("http://fake.company.com");
             var suppliersFilterDate = GlobalTestsParams.SuppliersDateTime.ToString("yyyy-MM-dd");
             Proxy = new ProxyHttpMessageHandler(
                 new RoutedHttpMessageHandler(
                     new Route(new Dictionary<string, string>
                     {
                         { $"{root}?filter=setLinesCmr", "Success" },
-                        { $"{root}?assignProductTo&ean=4002516315155", "Success" }
+                        { $"{root}?filter=assignProductTo&ean=4002516315155", "Success" }
                     }).With(
                         new Uri($"{root}?filter=getListCmr&date={suppliersFilterDate}"),
                         "./Data/Suppliers.json"

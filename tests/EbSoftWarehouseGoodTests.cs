@@ -79,7 +79,12 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .From(goodStorages.First())
                 .MoveToAsync(goodStorages.Last(), 5);
             Assert.EqualJson(
-                "",
+                @"{
+                  ""ean"": ""4002516315155"",
+                  ""origin"": null,
+                  ""destination"": null,
+                  ""quantity"": 5
+                }",
                 backend.Proxy.RequestsContent[1]
             );
         }
