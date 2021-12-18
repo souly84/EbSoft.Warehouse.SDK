@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Threading.Tasks;
-using EbSoft.Warehouse.SDK.UnitTests;
 using Xunit;
 using Xunit.Abstractions;
 
