@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
@@ -35,6 +36,16 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.Equal(
                 2,
                 (await good.Storages.ToListAsync()).Count
+            );
+        }
+
+        [Fact]
+        public Task ThrowsInvalidOperationExceptionWhenNoGoodEan()
+        {
+            return Assert.ThrowsAsync<InvalidOperationException>(
+                () => new EbSoftCompany(
+                    new FakeBackend().ToWebRequest()
+                ).Warehouse.Goods.FirstAsync()
             );
         }
 

@@ -26,7 +26,7 @@ namespace EbSoft.Warehouse.SDK.Tests
             );
         }
 
-        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        [Fact]
         public Task UnsuccesfullLogin()
         {
             return Assert.ThrowsAsync<EbSoftInvalidLoginException>(
