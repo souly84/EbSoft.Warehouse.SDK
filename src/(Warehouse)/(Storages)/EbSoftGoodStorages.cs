@@ -4,21 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
     public class EbSoftGoodStorages : IStorages
     {
-        private readonly IWebRequest _server;
         private readonly JArray _locations;
         private IEntities<IStorage> _putAway;
         private IEntities<IStorage> _race;
         private IEntities<IStorage> _reserved;
 
-        public EbSoftGoodStorages(IWebRequest server, JArray locations)
+        public EbSoftGoodStorages(JArray locations)
         {
-            _server = server;
             _locations = locations;
         }
 
