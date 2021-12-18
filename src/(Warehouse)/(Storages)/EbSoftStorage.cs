@@ -33,7 +33,7 @@ namespace EbSoft.Warehouse.SDK
         public void PrintTo(IMedia media)
         {
             media
-                .Put("Number", _storage.Value<string>("storage"))
+                .Put("Number", _storage.Value<string>("ean"))
                 .Put("Quantity", _storage.Value<int>("quantity"));
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
@@ -81,8 +80,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.EqualJson(
                 @"{
                   ""ean"": ""4002516315155"",
-                  ""origin"": null,
-                  ""destination"": null,
+                  ""origin"": ""135332235624"",
+                  ""destination"": ""122334461809"",
                   ""quantity"": 5
                 }",
                 backend.Proxy.RequestsContent[1]
