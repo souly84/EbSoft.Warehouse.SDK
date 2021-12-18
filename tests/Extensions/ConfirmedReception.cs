@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
-using Warehouse.Core.Receptions;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
 {
@@ -16,14 +14,14 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             _origin = origin;
         }
 
-        public IGoods Goods => _origin.Goods;
+        public IEntities<IReceptionGood> Goods => _origin.Goods;
 
         public async Task<T> ConfirmAsync()
         {
             var confirmation = _origin.Confirmation();
             foreach (var good in await _origin.Goods.ToListAsync())
             {
-                while (!good.Confirmed())
+                while (!await good.ConfirmedAsync())
                 {
                     await confirmation.AddAsync(good);
                 }

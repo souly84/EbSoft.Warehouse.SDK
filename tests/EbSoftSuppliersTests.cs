@@ -1,15 +1,13 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Threading.Tasks;
 using Warehouse.Core;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftSuppliersTests
     {
-        private ISuppliers _ebSoftSuppliers = new EbSoftCompany(
+        private IEntities<ISupplier> _ebSoftSuppliers = new EbSoftCompany(
              ConfigurationManager.AppSettings["companyUri"]
         ).Suppliers;
 

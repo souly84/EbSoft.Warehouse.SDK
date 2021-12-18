@@ -4,16 +4,16 @@ using Warehouse.Core;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class SuppliersFilter : IFilter
+    public class SuppliersByDateFilter : IFilter
     {
         private readonly DateTime _filterDate;
 
-        public SuppliersFilter()
+        public SuppliersByDateFilter()
             : this(DateTime.Now)
         {
         }
 
-        public SuppliersFilter(DateTime filterDate)
+        public SuppliersByDateFilter(DateTime filterDate)
         {
             _filterDate = filterDate;
         }

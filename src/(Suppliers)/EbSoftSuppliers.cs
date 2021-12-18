@@ -8,13 +8,13 @@ using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftSuppliers : ISuppliers
+    public class EbSoftSuppliers : IEntities<ISupplier>
     {
         private readonly IWebRequest _server;
         private readonly IFilter _filter;
 
         public EbSoftSuppliers(IWebRequest server)
-            : this(server, new SuppliersFilter())
+            : this(server, new SuppliersByDateFilter())
         {
         }
 
@@ -24,7 +24,7 @@ namespace EbSoft.Warehouse.SDK
             _filter = filter;
         }
 
-        public ISuppliers With(IFilter filter)
+        public IEntities<ISupplier> With(IFilter filter)
         {
             return new EbSoftSuppliers(_server, filter);
         }
@@ -37,9 +37,14 @@ namespace EbSoft.Warehouse.SDK
                     .ReadAsync<List<JObject>>(),
                 (item) => item.Value<string>("nom")
             ).ToDictionary();
-            return bySupplierName.Values
-                .Select(receptions => new EbSoftSupplier(_server, receptions))
-                .ToList<ISupplier>();
+            return bySupplierName.Keys
+                .Select(supplierName =>
+                    new EbSoftSupplier(
+                        _server,
+                        supplierName,
+                        bySupplierName[supplierName]
+                    )
+                ).ToList<ISupplier>();
         }
     }
 }

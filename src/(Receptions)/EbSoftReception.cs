@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MediaPrint;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
@@ -11,7 +10,7 @@ namespace EbSoft.Warehouse.SDK
     {
         private readonly IWebRequest _server;
         private readonly string _receptionId;
-        private IGoods _goods;
+        private IEntities<IReceptionGood> _goods;
 
         public EbSoftReception(
             IWebRequest server,
@@ -21,7 +20,7 @@ namespace EbSoft.Warehouse.SDK
             _receptionId = receptionId;
         }
 
-        public IGoods Goods => _goods ?? (_goods = new EbSoftStockGoods(
+        public IEntities<IReceptionGood> Goods => _goods ?? (_goods = new EbSoftReceptionGoods(
             _server,
             _receptionId).Cached()
         );
@@ -36,7 +35,13 @@ namespace EbSoft.Warehouse.SDK
         public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
         {
             return _server
-                .WithRelativePath("/reception/validation")
+                .WithQueryParams(
+                    new Dictionary<string, string>
+                    {
+                        { "filter", "setLinesCmr" },
+                    }
+                )
+                .WithMethod(System.Net.Http.HttpMethod.Post)
                 .WithBody(new ReceptionConfirmationAsJsonBody(goodsToValidate))
                 .EnsureSuccessAsync();
         }

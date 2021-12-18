@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftReceptions : IReceptions
+    public class EbSoftReceptions : IEntities<IReception>
     {
         private readonly IWebRequest _server;
         private readonly IList<JObject> _receptions;
@@ -19,7 +19,7 @@ namespace EbSoft.Warehouse.SDK
             _receptions = receptions;
         }
 
-        public IReceptions With(IFilter filter)
+        public IEntities<IReception> With(IFilter filter)
         {
             throw new NotImplementedException();
         }

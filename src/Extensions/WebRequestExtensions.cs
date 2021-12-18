@@ -13,15 +13,29 @@ namespace EbSoft.Warehouse.SDK.Extensions
     {
         public static async Task<T> ReadAsync<T>(this IWebRequest request)
         {
-            var content = await request
-               .ReadAsStringAsync()
-               .ConfigureAwait(false);
-            if (typeof(T) == typeof(string))
+            string content = string.Empty;
+            try
             {
-                return (T)(object)content;
-            }
+                content = await request
+                   .ReadAsStringAsync()
+                   .ConfigureAwait(false);
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)content;
+                }
 
-            return JsonConvert.DeserializeObject<T>(content);
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception ex)
+            {
+                ex.Data["Content"] = content;
+                throw;
+            }
+        }
+
+        public static IWebRequest WithBody(this IWebRequest request, JObject body)
+        {
+            return request.WithBody(new SimpleString(body.ToString()));
         }
 
         public static async Task<IList<T>> SelectAsync<T>(

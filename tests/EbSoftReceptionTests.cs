@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
-using Warehouse.Core.Receptions;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
@@ -11,7 +10,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftReceptionTests
     {
-        private ISuppliers _ebSoftSuppliers = new EbSoftCompany(
+        private IEntities<ISupplier> _ebSoftSuppliers = new EbSoftCompany(
             ConfigurationManager.AppSettings["companyUri"]
         ).Suppliers;
 
@@ -106,8 +105,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            await reception.Confirmation().AddAsync("4002515996744");
-            await reception.Confirmation().CommitAsync();
+            var confirmation = reception.Confirmation();
+            await confirmation.AddAsync("4002515996744");
+            await confirmation.CommitAsync();
             Assert.EqualJsonArrays(
                 @"[
                   {
