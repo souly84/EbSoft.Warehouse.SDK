@@ -21,7 +21,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4002516315155")
+                .Goods.For("4242002728643")
                 .FirstAsync();
 
             Assert.NotEmpty(
