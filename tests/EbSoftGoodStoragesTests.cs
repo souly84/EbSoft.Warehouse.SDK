@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
 using Xunit;
