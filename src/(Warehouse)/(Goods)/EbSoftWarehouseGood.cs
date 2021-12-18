@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using MediaPrint;
+﻿using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
@@ -11,7 +9,7 @@ namespace EbSoft.Warehouse.SDK.Warehouse
     {
         private readonly IWebRequest _server;
         private readonly JObject _good;
-        private IEntities<IStorage> _storages;
+        private IStorages _storages;
 
         public EbSoftWarehouseGood(IWebRequest server, JObject good)
         {
@@ -21,18 +19,18 @@ namespace EbSoft.Warehouse.SDK.Warehouse
 
         public int Quantity => new GoodStoragesTotalQuantity(_good).ToInt();
 
-        public IEntities<IStorage> Storages
+        public IStorages Storages
         {
             get
             {
                 if (_storages == null)
                 {
-                    _storages = new ListOfEntities<IStorage>(
-                        _good
-                            .Value<JArray>("locations")
-                            .Select(storage => new EbSoftStorage(_server, (JObject)storage))
+                    _storages = new EbSoftGoodStorages(
+                        _server,
+                        _good.Value<JArray>("locations")
                     );
                 }
+
                 return _storages;
             }
         }
