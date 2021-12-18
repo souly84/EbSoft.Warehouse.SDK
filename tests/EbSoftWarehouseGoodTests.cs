@@ -20,7 +20,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4002516315155")
+                .Goods.For("4242002728643")
                 .FirstAsync();
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
@@ -84,10 +84,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var good = await new EbSoftCompany(
                 backend.ToWebRequest()
             ).Warehouse.Goods.For("4002516315155").FirstAsync();
-            var goodStorages = await good.Storages.ToListAsync();
             await good.Movement
-                .From(goodStorages.First())
-                .MoveToAsync(goodStorages.Last(), 5);
+                .From(await good.Storages.ByBarcodeAsync("135332235624"))
+                .MoveToAsync(await good.Storages.ByBarcodeAsync("122334461809"), 5);
             Assert.EqualJson(
                 @"{
                   ""ean"": ""4002516315155"",
@@ -99,8 +98,29 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             );
         }
 
-        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        [Fact]
         public async Task PutAway()
+        {
+            var backend = new FakeBackend();
+            var good = await new EbSoftCompany(
+                backend.ToWebRequest()
+            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            await good.Movement
+                .From(await good.Storages.Race.FirstAsync())
+                .MoveToAsync(await good.Storages.PutAway.FirstAsync(), 5);
+            Assert.EqualJson(
+                @"{
+                  ""ean"": ""4002516315155"",
+                  ""origin"": ""122334461809"",
+                  ""destination"": ""135332235624"",
+                  ""quantity"": 5
+                }",
+                backend.Proxy.RequestsContent[1]
+            );
+        }
+
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task PutAwayIntegration()
         {
             var good = await _ebSoftCompany
                 .Warehouse

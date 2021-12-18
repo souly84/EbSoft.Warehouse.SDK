@@ -1,43 +1,70 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EbSoft.Warehouse.SDK.Extensions;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
-    public class EbSoftGoodStorages : IEntities<IStorage>
+    public class EbSoftGoodStorages : IStorages
     {
-        private readonly IWebRequest _server;
-        private readonly IFilter _filter;
+        private readonly JArray _locations;
+        private IEntities<IStorage> _putAway;
+        private IEntities<IStorage> _race;
+        private IEntities<IStorage> _reserved;
 
-        public EbSoftGoodStorages(IWebRequest server, string goodEan)
-            : this(server, new EanGoodsFilter(goodEan))
+        public EbSoftGoodStorages(JArray locations)
         {
+            _locations = locations;
         }
 
-        public EbSoftGoodStorages(IWebRequest server, IFilter filter)
-        {
-            _server = server;
-            _filter = filter;
-        }
+        public IEntities<IStorage> PutAway => _putAway ?? (_putAway = new ListOfEntities<IStorage>(
+            _locations.Where(IsPutAway).Select(ToStorage)
+        ));
 
-        public async Task<IList<IStorage>> ToListAsync()
+        public IEntities<IStorage> Race => _race ?? (_race = new ListOfEntities<IStorage>(
+            _locations.Where(IsRace).Select(ToStorage)
+        ));
+
+        public IEntities<IStorage> Reserve => _reserved ?? (_reserved = new ListOfEntities<IStorage>(
+            _locations.Where(IsReserve).Select(ToStorage)
+        ));
+
+        public Task<IList<IStorage>> ToListAsync()
         {
-            var good = await _server
-                .WithFilter(_filter)
-                .ReadAsync<JObject>();
-            return good
-                .Value<JArray>("locations")
-                .Select(storage => new EbSoftStorage(_server, (JObject)storage))
-                .ToList<IStorage>();
+            return Task.FromResult<IList<IStorage>>(
+                _locations
+                    .Select(ToStorage)
+                    .ToList()
+            );
         }
 
         public IEntities<IStorage> With(IFilter filter)
         {
-            return new EbSoftGoodStorages(_server, filter);
+            throw new NotImplementedException(
+                $"Not Clear how to implement this method for {nameof(EbSoftGoodStorages)}"
+            );
+        }
+
+        private IStorage ToStorage(JToken storage)
+        {
+            return new EbSoftStorage((JObject)storage);
+        }
+
+        private bool IsPutAway(JToken storage)
+        {
+            return storage.Value<string>("location").Contains("CHECK IN");
+        }
+
+        private bool IsRace(JToken storage)
+        {
+            return !IsPutAway(storage) && storage.Value<string>("location").Contains("L-0");
+        }
+
+        private bool IsReserve(JToken storage)
+        {
+            return !IsPutAway(storage) && !IsRace(storage);
         }
     }
 }
