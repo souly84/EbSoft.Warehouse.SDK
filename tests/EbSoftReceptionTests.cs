@@ -43,7 +43,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             ).ReceptionAsync();
 
             await reception.FullyConfirmedAsync();
-            Assert.EqualJsonArrays(
+            Assert.EqualJson(
                 File.ReadAllText("./Data/MieleConfirmedGoods.json"),
                 ebSoftServer.Proxy.RequestsContent[2]
             );
@@ -88,15 +88,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().RemoveAsync(goods[0]);
             await reception.Confirmation().CommitAsync();
-            Assert.EqualJsonArrays(
-                @"[
-                  {
-                    ""id"": ""30"",
-                    ""qty"": ""1"",
-                    ""gtin"": ""4002516315155"",
-                    ""error_code"": null
-                  }
-                ]",
+            Assert.EqualJson(
+                @"{
+                    ""cmrId"" : 5,
+                    ""lines"" : [
+                      {
+                        ""id"": ""30"",
+                        ""qty"": ""1"",
+                        ""gtin"": ""4002516315155"",
+                        ""error_code"": null
+                      }
+                    ]
+                 }",
                  ebSoftServer.Proxy.RequestsContent[2]
             );
         }
@@ -111,15 +114,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var confirmation = reception.Confirmation();
             await confirmation.AddAsync("4002515996744");
             await confirmation.CommitAsync();
-            Assert.EqualJsonArrays(
-                @"[
-                  {
-                    ""id"": ""23"",
-                    ""qty"": ""1"",
-                    ""gtin"": ""4002515996744"",
-                    ""error_code"": null
-                  }
-                ]",
+            Assert.EqualJson(
+                @"{
+                    ""cmrId"" : 5,
+                    ""lines"" : [
+                      {
+                        ""id"": ""23"",
+                        ""qty"": ""1"",
+                        ""gtin"": ""4002515996744"",
+                        ""error_code"": null
+                      }
+                    ]
+                 }",
                  ebSoftServer.Proxy.RequestsContent[2]
             );
         }
@@ -134,8 +140,11 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync("4002515996744");
             await reception.Confirmation().RemoveAsync("4002515996744");
             await reception.Confirmation().CommitAsync();
-            Assert.EqualJsonArrays(
-                @"[]",
+            Assert.EqualJson(
+                @"{
+                    ""cmrId"" : 5,
+                    ""lines"" : []
+                 }",
                  ebSoftServer.Proxy.RequestsContent[2]
             );
         }
