@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
+using MediaPrint;
 using Warehouse.Core;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
@@ -20,8 +21,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4242002728643")
+                .Goods.For("4002516315155")
                 .FirstAsync();
+
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
             );
@@ -130,6 +132,22 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
             );
+        }
+
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task GetLocationFromProduct()
+        {
+            var good = await _ebSoftCompany
+               .Warehouse
+               .Goods.For("4002516315155")
+               .FirstAsync();
+            var goodStorages = await good.Storages.ToListAsync();
+            
+
+            var qty = goodStorages.First().ToDictionary().ValueOrDefault<int>("Quantity");
+            var location = goodStorages.First().ToDictionary().ValueOrDefault<string>("Location");
+            var barcode = goodStorages.First().ToDictionary().ValueOrDefault<string>("Barcode");
+            Assert.Equal(4, qty);
         }
     }
 }
