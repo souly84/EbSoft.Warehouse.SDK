@@ -5,9 +5,9 @@ namespace EbSoft.Warehouse.SDK
 {
     public class ReceptionsGoodsFilter : IFilter
     {
-        private readonly string _receptionId;
+        private readonly int _receptionId;
 
-        public ReceptionsGoodsFilter(string receptionId)
+        public ReceptionsGoodsFilter(int receptionId)
         {
             _receptionId = receptionId;
         }

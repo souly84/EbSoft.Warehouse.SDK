@@ -7,12 +7,12 @@ namespace EbSoft.Warehouse.SDK
 {
     public sealed class EbSoftReceptionGood : IReceptionGood, IEquatable<string>, IEquatable<int>
     {
-        private readonly string _receptionId;
+        private readonly int _receptionId;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
 
         public EbSoftReceptionGood(
-            string receptionId,
+            int receptionId,
             JObject ebSoftGood)
         {
             _receptionId = receptionId;
