@@ -9,12 +9,12 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftReceptionGoods : IEntities<IReceptionGood>
     {
         private readonly IWebRequest _server;
-        private readonly string _receptionId;
+        private readonly int _receptionId;
         private readonly IFilter _filter;
 
         public EbSoftReceptionGoods(
             IWebRequest server,
-            string receptionId
+            int receptionId
         ) : this(
                 server,
                 receptionId,
@@ -25,7 +25,7 @@ namespace EbSoft.Warehouse.SDK
 
         public EbSoftReceptionGoods(
             IWebRequest server,
-            string receptionId,
+            int receptionId,
             IFilter filter)
         {
             _server = server;

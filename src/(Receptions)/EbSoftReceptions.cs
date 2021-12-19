@@ -28,7 +28,7 @@ namespace EbSoft.Warehouse.SDK
         {
             return Task.FromResult<IList<IReception>>(
                 _receptions
-                    .Select(reception => new EbSoftReception(_server, reception.Value<string>("id")))
+                    .Select(reception => new EbSoftReception(_server, reception.Value<int>("id")))
                     .ToList<IReception>()
             );
         }

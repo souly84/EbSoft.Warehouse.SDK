@@ -60,15 +60,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().CommitAsync();
-            Assert.EqualJsonArrays(
-                @"[
-                  {
-                    ""id"": ""30"",
-                    ""qty"": ""2"",
-                    ""gtin"": ""4002516315155"",
-                    ""error_code"": null
-                  }
-                ]",
+            Assert.EqualJson(
+                @"{
+                    ""cmrId"" : 5,
+                    ""lines"" : [
+                      {
+                        ""id"": ""30"",
+                        ""qty"": ""2"",
+                        ""gtin"": ""4002516315155"",
+                        ""error_code"": null
+                      }
+                    ]
+                 }",
                  ebSoftServer.Proxy.RequestsContent[2]
             );
         }

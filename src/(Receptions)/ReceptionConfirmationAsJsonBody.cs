@@ -2,17 +2,20 @@
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
-using Warehouse.Core.Goods;
 using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
     public class ReceptionConfirmationAsJsonBody : IJsonObject
     {
+        private readonly int _receptionId;
         private readonly IList<IGoodConfirmation> _confirmedGood;
 
-        public ReceptionConfirmationAsJsonBody(IList<IGoodConfirmation> confirmedGoods)
+        public ReceptionConfirmationAsJsonBody(
+            int receptionId,
+            IList<IGoodConfirmation> confirmedGoods)
         {
+            _receptionId = receptionId;
             _confirmedGood = confirmedGoods;
         }
 
@@ -37,7 +40,10 @@ namespace EbSoft.Warehouse.SDK
                 }
                
             }
-            return array.ToString();
+            return new JObject(
+                new JProperty("cmrId", _receptionId),
+                new JProperty("lines", array)
+            ).ToString();
         }
     }
 }

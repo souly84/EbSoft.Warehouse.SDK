@@ -9,12 +9,12 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftReception : IReception, IPrintable
     {
         private readonly IWebRequest _server;
-        private readonly string _receptionId;
+        private readonly int _receptionId;
         private IEntities<IReceptionGood> _goods;
 
         public EbSoftReception(
             IWebRequest server,
-            string receptionId)
+            int receptionId)
         {
             _server = server;
             _receptionId = receptionId;
@@ -42,7 +42,7 @@ namespace EbSoft.Warehouse.SDK
                     }
                 )
                 .WithMethod(System.Net.Http.HttpMethod.Post)
-                .WithBody(new ReceptionConfirmationAsJsonBody(goodsToValidate))
+                .WithBody(new ReceptionConfirmationAsJsonBody(_receptionId, goodsToValidate))
                 .EnsureSuccessAsync();
         }
     }
