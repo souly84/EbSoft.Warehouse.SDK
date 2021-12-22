@@ -35,14 +35,14 @@ namespace EbSoft.Warehouse.SDK
         public Task ValidateAsync(IList<IGoodConfirmation> goodsToValidate)
         {
             return _server
-                .WithQueryParams(
-                    new Dictionary<string, string>
+                .WithMethod(System.Net.Http.HttpMethod.Post)
+                .WithBody(
+                    new Dictionary<string, IJsonObject>
                     {
-                        { "filter", "setLinesCmr" },
+                        { "filter", new SimpleString("setLinesCmr") },
+                        { "json", new ReceptionConfirmationAsJsonBody(_receptionId, goodsToValidate) }
                     }
                 )
-                .WithMethod(System.Net.Http.HttpMethod.Post)
-                .WithBody(new ReceptionConfirmationAsJsonBody(_receptionId, goodsToValidate))
                 .EnsureSuccessAsync();
         }
     }

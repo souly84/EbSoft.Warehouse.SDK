@@ -21,7 +21,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4242002728643")
+                .Goods.For("4242005051137")
                 .FirstAsync();
 
             Assert.NotEmpty(
@@ -68,7 +68,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4002516315155")
+                .Goods.For("4242005051137")
                 .FirstAsync();
             var goodStorages = await good.Storages.ToListAsync();
             await good.Movement
@@ -139,15 +139,15 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                .Warehouse
-               .Goods.For("4002516315155")
+               .Goods.For("4242005051137")
                .FirstAsync();
-            var goodStorages = await good.Storages.ToListAsync();
+            var goodStorage = await good.Storages.FirstAsync();
             
-
-            var qty = goodStorages.First().ToDictionary().ValueOrDefault<int>("Quantity");
-            var location = goodStorages.First().ToDictionary().ValueOrDefault<string>("Location");
-            var barcode = goodStorages.First().ToDictionary().ValueOrDefault<string>("Barcode");
-            Assert.Equal(4, qty);
+            Assert.EqualJson(@"{
+                    ""Quantity"": ""1"",
+                    ""Location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.0"",
+                    ""Number"": ""135332235624""
+                    }", goodStorage.ToJson().ToString());
         }
     }
 }

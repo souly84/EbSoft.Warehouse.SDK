@@ -1,0 +1,99 @@
+﻿------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=filter
+
+setLinesCmr
+------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=json
+
+{
+  "cmrId": 5,
+  "lines": [
+    {
+      "id": "30",
+      "qty": "2",
+      "gtin": "4002516315155",
+      "error_code": null
+    },
+    {
+      "id": "23",
+      "qty": "1",
+      "gtin": "4002515996744",
+      "error_code": null
+    },
+    {
+      "id": "25",
+      "qty": "1",
+      "gtin": "4002516373582",
+      "error_code": null
+    },
+    {
+      "id": "55",
+      "qty": "1",
+      "gtin": "4002516315261",
+      "error_code": null
+    },
+    {
+      "id": "27",
+      "qty": "1",
+      "gtin": "4002516128182",
+      "error_code": null
+    },
+    {
+      "id": "56",
+      "qty": "1",
+      "gtin": "4002516132370",
+      "error_code": null
+    },
+    {
+      "id": "52",
+      "qty": "1",
+      "gtin": "4002516315155",
+      "error_code": null
+    },
+    {
+      "id": "40",
+      "qty": "1",
+      "gtin": "",
+      "error_code": null
+    },
+    {
+      "id": "43",
+      "qty": "1",
+      "gtin": "4002516378693",
+      "error_code": null
+    },
+    {
+      "id": "42",
+      "qty": "1",
+      "gtin": "4002516439554",
+      "error_code": null
+    },
+    {
+      "id": "26",
+      "qty": "1",
+      "gtin": "4002516429142",
+      "error_code": null
+    },
+    {
+      "id": "31",
+      "qty": "1",
+      "gtin": "4002516379089",
+      "error_code": null
+    },
+    {
+      "id": "38",
+      "qty": "1",
+      "gtin": "4002516061731",
+      "error_code": null
+    },
+    {
+      "id": "39",
+      "qty": "2",
+      "gtin": "4002516138631",
+      "error_code": null
+    }
+  ]
+}
+------WebRequestBoundary--
