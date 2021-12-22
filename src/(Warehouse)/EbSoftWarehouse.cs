@@ -1,5 +1,9 @@
-﻿using EbSoft.Warehouse.SDK.Warehouse;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.Extensions;
+using EbSoft.Warehouse.SDK.Warehouse;
 using MediaPrint;
+using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -18,6 +22,19 @@ namespace EbSoft.Warehouse.SDK
             _server,
             new NotWarehouseInitializedFilter()
         );
+
+        public async Task<IStorage> ByBarcodeAsync(string ean)
+        {
+            return new EbSoftStorage(
+                await _server.WithQueryParams(
+                    new Dictionary<string, string>
+                    {
+                        { "filter", "getBoxes" },
+                        { "ean", ean },
+                    }
+                ).ReadAsync<JObject>()
+            );
+        }
 
         public void PrintTo(IMedia media)
         {

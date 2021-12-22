@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.Extensions;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
+using WebRequest.Elegant;
 
 namespace EbSoft.Warehouse.SDK
 {
     public class EbSoftGoodStorages : IStorages
     {
+        private readonly IWebRequest _server;
         private readonly JArray _locations;
         private IEntities<IStorage> _putAway;
         private IEntities<IStorage> _race;
         private IEntities<IStorage> _reserved;
 
-        public EbSoftGoodStorages(JArray locations)
+        public EbSoftGoodStorages(IWebRequest server, JArray locations)
         {
+            _server = server;
             _locations = locations;
         }
 
@@ -37,6 +41,19 @@ namespace EbSoft.Warehouse.SDK
                 _locations
                     .Select(ToStorage)
                     .ToList()
+            );
+        }
+
+        public async Task<IStorage> ByBarcodeAsync(string ean)
+        {
+            return new EbSoftStorage(
+                await _server.WithQueryParams(
+                    new Dictionary<string, string>
+                    {
+                        { "filter", "getBoxes" },
+                        { "ean", ean },
+                    }
+                ).ReadAsync<JObject>()
             );
         }
 
