@@ -31,14 +31,27 @@
     <Content Include="Data\MieleReceptions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\MieleConfirmedGoods.json">
+    <Content Include="Data\Product.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Product.json">
+    <Content Include="Data\ReceptionConfirmationRequestBody.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\EmptyConfirmationRequestBody.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\MieleConfirmedGoods.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\ReceptionConfirmationRequestBodyQuantity2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   
+  <ItemGroup>
+    <None Remove="Data\MieleConfirmedGoods.txt" />
+    <None Remove="Data\ReceptionConfirmationRequestBodyQuantity2.txt" />
+  </ItemGroup>
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>

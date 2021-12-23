@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
+using WebRequest.Elegant.Extensions;
+using WebRequest.Elegant.Fakes;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
@@ -43,9 +45,10 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             ).ReceptionAsync();
 
             await reception.FullyConfirmedAsync();
-            Assert.EqualJson(
-                File.ReadAllText("./Data/MieleConfirmedGoods.json"),
-                ebSoftServer.Proxy.RequestsContent[2]
+            Assert.Equal(
+                File.ReadAllText("./Data/MieleConfirmedGoods.txt")
+                    .NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }
 
@@ -60,19 +63,28 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().CommitAsync();
+            Assert.Equal(
+                File.ReadAllText("./Data/ReceptionConfirmationRequestBodyQuantity2.txt")
+                    .NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task Reception_Confirmation_Integration()
+        {
+            var proxy = new ProxyHttpMessageHandler();
+            var supplier = await new EbSoftCompany(
+                new WebRequest.Elegant.WebRequest(
+                    ConfigurationManager.AppSettings["companyUri"],proxy)
+            ).Suppliers.For(new System.DateTime(2021,12,22)).FirstAsync();
+
+            var reception = await supplier.Receptions.FirstAsync();
+            await reception.FullyConfirmedAsync();
+
             Assert.EqualJson(
-                @"{
-                    ""cmrId"" : 5,
-                    ""lines"" : [
-                      {
-                        ""id"": ""30"",
-                        ""qty"": ""2"",
-                        ""gtin"": ""4002516315155"",
-                        ""error_code"": null
-                      }
-                    ]
-                 }",
-                 ebSoftServer.Proxy.RequestsContent[2]
+                    @"{""code"":""0"",""message"":""Enregistrement"",""data"":""""}",
+                 proxy.ResponsesContent[2]
             );
         }
 
@@ -88,19 +100,12 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().RemoveAsync(goods[0]);
             await reception.Confirmation().CommitAsync();
-            Assert.EqualJson(
-                @"{
-                    ""cmrId"" : 5,
-                    ""lines"" : [
-                      {
-                        ""id"": ""30"",
-                        ""qty"": ""1"",
-                        ""gtin"": ""4002516315155"",
-                        ""error_code"": null
-                      }
-                    ]
-                 }",
-                 ebSoftServer.Proxy.RequestsContent[2]
+            Assert.Equal(
+                new FileContent("./Data/ReceptionConfirmationRequestBody.txt").ToString()
+                .Replace("\"id\": \"23\"", "\"id\": \"30\"")
+                .Replace("4002515996744", "4002516315155")
+                .NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }
 
@@ -114,19 +119,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var confirmation = reception.Confirmation();
             await confirmation.AddAsync("4002515996744");
             await confirmation.CommitAsync();
-            Assert.EqualJson(
-                @"{
-                    ""cmrId"" : 5,
-                    ""lines"" : [
-                      {
-                        ""id"": ""23"",
-                        ""qty"": ""1"",
-                        ""gtin"": ""4002515996744"",
-                        ""error_code"": null
-                      }
-                    ]
-                 }",
-                 ebSoftServer.Proxy.RequestsContent[2]
+            Assert.Equal(
+                new FileContent("./Data/ReceptionConfirmationRequestBody.txt").ToString().NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }
 
@@ -140,12 +135,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().AddAsync("4002515996744");
             await reception.Confirmation().RemoveAsync("4002515996744");
             await reception.Confirmation().CommitAsync();
-            Assert.EqualJson(
-                @"{
-                    ""cmrId"" : 5,
-                    ""lines"" : []
-                 }",
-                 ebSoftServer.Proxy.RequestsContent[2]
+            Assert.Equal(
+                new FileContent("./Data/EmptyConfirmationRequestBody.txt").ToString().NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }
     }

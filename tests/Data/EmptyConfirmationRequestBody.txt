@@ -1,0 +1,14 @@
+﻿------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=filter
+
+setLinesCmr
+------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=json
+
+{
+  "cmrId": 5,
+  "lines": []
+}
+------WebRequestBoundary--
