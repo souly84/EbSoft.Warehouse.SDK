@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Threading.Tasks;
+using MediaPrint;
+using Newtonsoft.Json.Linq;
 using WebRequest.Elegant.Extensions;
 using Xunit.Abstractions;
 
@@ -6,6 +8,20 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
 {
     public class Assert : Xunit.Assert
     {
+        public static async Task EqualJson<T>(
+            string expectedJson,
+            Task<T> actualJson,
+            ITestOutputHelper output = null)
+            where T : IPrintable
+        {
+            var actual = await actualJson.ConfigureAwait(false);
+            EqualJson(
+                expectedJson,
+                actual.ToJson().ToString(),
+                output
+            );
+        }
+
         public static void EqualJson(
             string expectedJson,
             string actualJson,

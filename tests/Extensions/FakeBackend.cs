@@ -28,6 +28,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                     ).With(
                         new Uri($"{root}?filter=getProduct&ean=4002516315155"),
                         "./Data/Product.json"
+                    ).With(
+                        new Uri($"{root}?filter=getBoxes&ean=133037620160"),
+                        "./Data/WarehouseStorage.json"
                     )
                 )
             );
