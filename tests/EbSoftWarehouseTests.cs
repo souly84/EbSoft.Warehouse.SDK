@@ -23,34 +23,14 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
-        public Task ByBarcodeInWarehouse()
+        public async Task ByBarcodeInWarehouse()
         {
-            return Assert.EqualJson(
-                @"{
-                  ""Quantity"": ""0"",
-                  ""Location"": ""B.8.0"",
-                  ""Number"": ""133037620160""
-                }",
-                new EbSoftCompany(
+            Assert.NotNull(
+                await new EbSoftCompany(
                     new FakeBackend().ToWebRequest()
                 ).Warehouse
                  .ByBarcodeAsync("133037620160")
             );
         }
-
-        //[Fact]
-        //public Task ByBarcodeNotExistingBarcode()
-        //{
-        //    return Assert.ThrowsAsync<InvalidOperationException>(
-        //        () =>
-        //         new MockStorages(
-        //            new ListOfEntities<IStorage>(new MockStorage(), new MockStorage()),
-        //            new ListOfEntities<IStorage>(new MockStorage(), new MockStorage()),
-        //            new ListOfEntities<IStorage>(new MockStorage("4567890")),
-        //            new ListOfEntities<IStorage>(new MockStorage(), new MockStorage())
-        //        ).InLocalFirst()
-        //         .ByBarcodeAsync("543212")
-        //    );
-        //}
     }
 }
