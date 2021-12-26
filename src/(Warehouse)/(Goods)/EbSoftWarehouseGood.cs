@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
-namespace EbSoft.Warehouse.SDK.Warehouse
+namespace EbSoft.Warehouse.SDK
 {
     public class EbSoftWarehouseGood : IWarehouseGood
     {
