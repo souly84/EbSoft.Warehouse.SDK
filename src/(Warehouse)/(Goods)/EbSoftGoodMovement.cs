@@ -42,7 +42,6 @@ namespace EbSoft.Warehouse.SDK
 
         public Task MoveToAsync(IStorage storage, int quantity)
         {
-            var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("ean");
             return _server
                 .WithMethod(HttpMethod.Post)
                 .WithBody(
@@ -50,7 +49,7 @@ namespace EbSoft.Warehouse.SDK
                     {
                         { "filter", new SimpleString("moveProductWarehouse") },
                         { "json", new JObject(
-                            new JProperty("ean", ean),
+                            new JProperty("ean", _good.ToDictionary().Value<JObject>("Data").Value<string>("ean")),
                             new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
                             new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
                             new JProperty("quantity", quantity)
