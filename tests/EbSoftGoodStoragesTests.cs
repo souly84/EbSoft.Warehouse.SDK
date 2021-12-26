@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Warehouse.Core;
@@ -44,6 +45,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.Equal(
                 0,
                 (await good.Storages.Reserve.ToListAsync()).Count
+            );
+        }
+
+        [Fact]
+        public async Task DoesNotSupportFilters()
+        {
+            var good = await new EbSoftCompany(
+                 new FakeBackend().ToWebRequest()
+             ).Warehouse.Goods.For("4002516315155")
+              .FirstAsync();
+            Assert.Throws<NotImplementedException>(() =>
+                good.Storages.With(new EmptyFilter())
             );
         }
     }
