@@ -45,18 +45,20 @@ namespace EbSoft.Warehouse.SDK
             var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("ean");
             return _server
                 .WithMethod(HttpMethod.Post)
-                .WithQueryParams(new Dictionary<string, string>
-                {
-                    { "filter", "assignProductTo" },
-                    { "ean", ean },
-                }).WithBody(
-                    new JObject(
-                        new JProperty("ean", ean),
-                        new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
-                        new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
-                        new JProperty("quantity", quantity)
-                    )
-                ).EnsureSuccessAsync();
+                .WithBody(
+                    new Dictionary<string, IJsonObject>
+                    {
+                        { "filter", new SimpleString("moveProductWarehouse") },
+                        { "json", new JObject(
+                            new JProperty("ean", ean),
+                            new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
+                            new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
+                            new JProperty("quantity", quantity)
+                          ).ToJsonBody()
+                        }
+                    }
+                )
+                .EnsureSuccessAsync();
         }
     }
 }
