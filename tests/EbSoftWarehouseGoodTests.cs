@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using MediaPrint;
 using Warehouse.Core;
+using WebRequest.Elegant.Fakes;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
@@ -12,9 +13,17 @@ namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftWarehouseGoodTests
     {
-        private EbSoftCompany _ebSoftCompany = new EbSoftCompany(
-             ConfigurationManager.AppSettings["companyUri"]
-        );
+        private EbSoftCompany _ebSoftCompany;
+
+        public EbSoftWarehouseGoodTests()
+        {
+            if (GlobalTestsParams.AzureDevOpsSkipReason == null)
+            {
+                _ebSoftCompany = new EbSoftCompany(
+                    ConfigurationManager.AppSettings["companyUri"]
+                );
+            }
+        }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public async Task GoodStoragesIntegration()
@@ -148,6 +157,33 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                     ""Location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.0"",
                     ""Number"": ""135332235624""
                     }", goodStorage.ToJson().ToString());
+        }
+
+        
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        public async Task MoveFromPutAwayToRace()
+        {
+            var proxy = new ProxyHttpMessageHandler();
+            var company = new EbSoftCompany(
+                new WebRequest.Elegant.WebRequest(
+                    ConfigurationManager.AppSettings["companyUri"], proxy)
+            );
+            var good = await company
+                .Warehouse
+                .Goods.For("4242005322251")
+                .FirstAsync();
+
+            await good.Movement
+                .From(await good.Storages.Reserve.FirstAsync())
+                .MoveToAsync(
+                    await good.Storages.ByBarcodeAsync(company.Warehouse, "134029475445"),
+                    1
+            );
+
+            Assert.EqualJson(
+                    @"{""code"":""0"",""message"":""Enregistrement"",""data"":""""}",
+                 proxy.ResponsesContent[2]
+            );
         }
     }
 }
