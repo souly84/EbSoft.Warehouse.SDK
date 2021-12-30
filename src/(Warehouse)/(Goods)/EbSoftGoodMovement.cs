@@ -42,7 +42,7 @@ namespace EbSoft.Warehouse.SDK
 
         public Task MoveToAsync(IStorage storage, int quantity)
         {
-            var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("ean");
+            var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("fromean");
             return _server
                 .WithMethod(HttpMethod.Post)
                 .WithQueryParams(new Dictionary<string, string>
