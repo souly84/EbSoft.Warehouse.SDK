@@ -13,9 +13,17 @@ namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftWarehouseGoodTests
     {
-        private EbSoftCompany _ebSoftCompany = new EbSoftCompany(
-             ConfigurationManager.AppSettings["companyUri"]
-        );
+        private EbSoftCompany _ebSoftCompany;
+
+        public EbSoftWarehouseGoodTests()
+        {
+            if (GlobalTestsParams.AzureDevOpsSkipReason == null)
+            {
+                _ebSoftCompany = new EbSoftCompany(
+                    ConfigurationManager.AppSettings["companyUri"]
+                );
+            }
+        }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public async Task GoodStoragesIntegration()
