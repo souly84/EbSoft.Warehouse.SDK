@@ -12,9 +12,17 @@ namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftReceptionTests
     {
-        private IEntities<ISupplier> _ebSoftSuppliers = new EbSoftCompany(
-            ConfigurationManager.AppSettings["companyUri"]
-        ).Suppliers;
+        private IEntities<ISupplier> _ebSoftSuppliers;
+
+        public EbSoftReceptionTests()
+        {
+            if (GlobalTestsParams.AzureDevOpsSkipReason == null)
+            {
+                _ebSoftSuppliers = new EbSoftCompany(
+                    ConfigurationManager.AppSettings["companyUri"]
+                ).Suppliers;
+            }
+        }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public async Task ToListAsync()
