@@ -1,0 +1,16 @@
+﻿------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=filter
+
+moveProductWarehouse
+------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=json
+
+{
+  "ean": "4002516315155",
+  "origin": "135332235624",
+  "destination": "122334461809",
+  "quantity": 5
+}
+------WebRequestBoundary--
