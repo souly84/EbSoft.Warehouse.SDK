@@ -42,21 +42,22 @@ namespace EbSoft.Warehouse.SDK
 
         public Task MoveToAsync(IStorage storage, int quantity)
         {
-            var ean = _good.ToDictionary().Value<JObject>("Data").Value<string>("fromean");
             return _server
                 .WithMethod(HttpMethod.Post)
-                .WithQueryParams(new Dictionary<string, string>
-                {
-                    { "filter", "assignProductTo" },
-                    { "ean", ean },
-                }).WithBody(
-                    new JObject(
-                        new JProperty("ean", ean),
-                        new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
-                        new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
-                        new JProperty("quantity", quantity)
-                    )
-                ).EnsureSuccessAsync();
+                .WithBody(
+                    new Dictionary<string, IJsonObject>
+                    {
+                        { "filter", new SimpleString("moveProductWarehouse") },
+                        { "json", new JObject(
+                            new JProperty("ean", _good.ToDictionary().Value<JObject>("Data").Value<string>("fromean")),
+                            new JProperty("origin", _fromStorage.ToDictionary().Value<string>("Number")),
+                            new JProperty("destination", storage.ToDictionary().Value<string>("Number")),
+                            new JProperty("quantity", quantity)
+                          ).ToJsonBody()
+                        }
+                    }
+                )
+                .EnsureSuccessAsync();
         }
     }
 }

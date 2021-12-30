@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using MediaPrint;
 using Warehouse.Core;
+using WebRequest.Elegant.Extensions;
 using WebRequest.Elegant.Fakes;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
@@ -98,14 +100,10 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await good.Movement
                 .From(await good.Storages.ByBarcodeAsync("135332235624"))
                 .MoveToAsync(await good.Storages.ByBarcodeAsync("122334461809"), 5);
-            Assert.EqualJson(
-                @"{
-                  ""ean"": ""4002516315155"",
-                  ""origin"": ""135332235624"",
-                  ""destination"": ""122334461809"",
-                  ""quantity"": 5
-                }",
-                backend.Proxy.RequestsContent[1]
+            Assert.Equal(
+                File.ReadAllText("./Data/StockMoveResponse.txt")
+                    .NoNewLines(),
+                backend.Proxy.RequestsContent[1].NoNewLines()
             );
         }
 
@@ -119,14 +117,11 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await good.Movement
                 .From(await good.Storages.Race.FirstAsync())
                 .MoveToAsync(await good.Storages.PutAway.FirstAsync(), 5);
-            Assert.EqualJson(
-                @"{
-                  ""ean"": ""4002516315155"",
-                  ""origin"": ""122334461809"",
-                  ""destination"": ""135332235624"",
-                  ""quantity"": 5
-                }",
-                backend.Proxy.RequestsContent[1]
+
+            Assert.Equal(
+                File.ReadAllText("./Data/PutAwayStockMoveResponse.txt")
+                    .NoNewLines(),
+                backend.Proxy.RequestsContent[1].NoNewLines()
             );
         }
 
