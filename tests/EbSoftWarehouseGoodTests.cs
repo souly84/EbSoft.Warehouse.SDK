@@ -113,7 +113,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var backend = new FakeBackend();
             var good = await new EbSoftCompany(
                 backend.ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            ).Warehouse.Goods.For("8690842264610").FirstAsync();
             await good.Movement
                 .From(await good.Storages.Race.FirstAsync())
                 .MoveToAsync(await good.Storages.PutAway.FirstAsync(), 5);
@@ -154,8 +154,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                     }", goodStorage.ToJson().ToString());
         }
 
-        
-        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
+        //(Skip = GlobalTestsParams.AzureDevOpsSkipReason)
+        [Fact]
         public async Task MoveFromPutAwayToRace()
         {
             var proxy = new ProxyHttpMessageHandler();
@@ -165,13 +165,13 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             );
             var good = await company
                 .Warehouse
-                .Goods.For("4242005322251")
+                .Goods.For("8690842264610")
                 .FirstAsync();
 
             await good.Movement
-                .From(await good.Storages.Reserve.FirstAsync())
+                .From(await good.Storages.PutAway.FirstAsync())
                 .MoveToAsync(
-                    await good.Storages.ByBarcodeAsync(company.Warehouse, "134029475445"),
+                    await good.Storages.ByBarcodeAsync(company.Warehouse, "134046348189"),
                     1
             );
 
