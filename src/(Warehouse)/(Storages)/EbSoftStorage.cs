@@ -10,7 +10,8 @@ namespace EbSoft.Warehouse.SDK
     {
         private readonly JObject _storage;
 
-        public EbSoftStorage(JObject storage)
+        public EbSoftStorage(
+            JObject storage)
         {
             _storage = storage;
         }
@@ -46,7 +47,7 @@ namespace EbSoft.Warehouse.SDK
             media
                 .Put("Quantity", _storage.Value<int>("quantity"))
                 .Put("Location", _storage.Value<string>("location"))
-                .Put("Number", Ean);
+                .Put("Barcode", _storage.Value<string>("ean"));
         }
 
 

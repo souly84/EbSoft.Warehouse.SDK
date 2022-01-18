@@ -85,7 +85,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var supplier = await new EbSoftCompany(
                 new WebRequest.Elegant.WebRequest(
                     ConfigurationManager.AppSettings["companyUri"],proxy)
-            ).Suppliers.For(new System.DateTime(2021,12,22)).FirstAsync();
+            ).Suppliers.For(GlobalTestsParams.SuppliersDateTime).FirstAsync();
 
             var reception = await supplier.Receptions.FirstAsync();
             await reception.FullyConfirmedAsync();

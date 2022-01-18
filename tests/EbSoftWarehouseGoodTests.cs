@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using MediaPrint;
+using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant.Extensions;
 using WebRequest.Elegant.Fakes;
@@ -148,14 +149,13 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var goodStorage = await good.Storages.FirstAsync();
             
             Assert.EqualJson(@"{
-                    ""Quantity"": ""1"",
+                    ""Quantity"": ""2"",
                     ""Location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.0"",
-                    ""Number"": ""135332235624""
+                    ""Barcode"": ""135332235624""
                     }", goodStorage.ToJson().ToString());
         }
 
-        //(Skip = GlobalTestsParams.AzureDevOpsSkipReason)
-        [Fact]
+        [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
         public async Task MoveFromPutAwayToRace()
         {
             var proxy = new ProxyHttpMessageHandler();

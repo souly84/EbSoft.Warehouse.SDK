@@ -6,6 +6,6 @@ namespace EbSoft.Warehouse.SDK.UnitTests
     {
         public const string AzureDevOpsSkipReason = "Skipped on azure pipeline because no server is available";
 
-        public static DateTime SuppliersDateTime = new DateTime(2021, 12, 22);
+        public static DateTime SuppliersDateTime = new DateTime(2022, 01, 18);
     }
 }
