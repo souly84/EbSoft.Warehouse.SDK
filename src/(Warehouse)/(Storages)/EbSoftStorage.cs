@@ -47,7 +47,7 @@ namespace EbSoft.Warehouse.SDK
             media
                 .Put("Quantity", _storage.Value<int>("quantity"))
                 .Put("Location", _storage.Value<string>("location"))
-                .Put("Barcode", _storage.Value<string>("ean"));
+                .Put("Number", _storage.Value<string>("ean"));
         }
 
 

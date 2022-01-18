@@ -5,7 +5,7 @@
     "article": "MIELE G5050SCVIEDST",
     "qt": "2",
     "ean": "4002516315155",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -16,7 +16,7 @@
     "article": "MIELE KM6520FR",
     "qt": "1",
     "ean": "4002515996744",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -27,7 +27,7 @@
     "article": "MIELE K7314F",
     "qt": "1",
     "ean": "4002516373582",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -38,7 +38,7 @@
     "article": "MIELE G5690SCVIEDST",
     "qt": "1",
     "ean": "4002516315261",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -49,7 +49,7 @@
     "article": "MIELE ESW7010OBSW",
     "qt": "1",
     "ean": "4002516128182",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -60,7 +60,7 @@
     "article": "MIELE H7240BMBW",
     "qt": "1",
     "ean": "4002516132370",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -71,7 +71,7 @@
     "article": "MIELE G5050SCVIEDST",
     "qt": "1",
     "ean": "4002516315155",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -82,7 +82,7 @@
     "article": "MIELE WED035WPS",
     "qt": "1",
     "ean": "",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -93,7 +93,7 @@
     "article": "MIELE K7773D",
     "qt": "1",
     "ean": "4002516378693",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -104,7 +104,7 @@
     "article": "MIELE FNS37405ILI",
     "qt": "1",
     "ean": "4002516439554",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -115,7 +115,7 @@
     "article": "MIELE DKF13P",
     "qt": "1",
     "ean": "4002516429142",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -126,7 +126,7 @@
     "article": "MIELE K7443DRE",
     "qt": "1",
     "ean": "4002516379089",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -137,7 +137,7 @@
     "article": "MIELE G7100SCICS",
     "qt": "1",
     "ean": "4002516061731",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"
@@ -148,7 +148,7 @@
     "article": "MIELE KM7575FL",
     "qt": "2",
     "ean": "4002516138631",
-    "qtin": null,
+    "qtin": 0,
     "error_code": null,
     "commentaire": null,
     "itemType": "electro"

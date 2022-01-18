@@ -114,7 +114,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var backend = new FakeBackend();
             var good = await new EbSoftCompany(
                 backend.ToWebRequest()
-            ).Warehouse.Goods.For("8690842264610").FirstAsync();
+            ).Warehouse.Goods.For("4002516315155").FirstAsync();
             await good.Movement
                 .From(await good.Storages.Race.FirstAsync())
                 .MoveToAsync(await good.Storages.PutAway.FirstAsync(), 5);
