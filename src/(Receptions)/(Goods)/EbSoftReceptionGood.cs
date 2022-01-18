@@ -27,7 +27,9 @@ namespace EbSoft.Warehouse.SDK
 
         private string ItemType => _ebSoftGood.Value<string>("itemType");
 
-        public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity));
+        private int ConfirmedQuantity => _ebSoftGood.Value<int>("qtin");
+
+        public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity, ConfirmedQuantity));
        
         public int Quantity => _ebSoftGood.Value<int>("qt");
 
@@ -40,7 +42,8 @@ namespace EbSoft.Warehouse.SDK
                 .Put("Ean", Ean)
                 .Put("oa", _ebSoftGood.Value<string>("oa"))
                 .Put("Quantity", _ebSoftGood.Value<int>("qt"))
-                .Put("ItemType", ItemType);
+                .Put("ItemType", ItemType)
+                .Put("ConfirmedQuantity", ConfirmedQuantity);
         }
 
         public override bool Equals(object obj)
