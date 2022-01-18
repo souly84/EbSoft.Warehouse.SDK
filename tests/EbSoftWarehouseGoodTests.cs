@@ -151,7 +151,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.EqualJson(@"{
                     ""Quantity"": ""2"",
                     ""Location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.0"",
-                    ""Barcode"": ""135332235624""
+                    ""Number"": ""135332235624""
                     }", goodStorage.ToJson().ToString());
         }
 
