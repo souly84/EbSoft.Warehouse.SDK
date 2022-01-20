@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
@@ -19,12 +20,25 @@ namespace EbSoft.Warehouse.SDK
         {
             _receptionId = receptionId;
             _ebSoftGood = ebSoftGood;
-            _eans = _ebSoftGood.Value<JArray>("ean").ToObject<List<string>>();
+           
         }
 
         private int Id => _ebSoftGood.Value<int>("id");
+        private string _lastTimeFoundByEan;
 
-        private List<string> Eans => _eans;
+        private List<string> Eans
+        {
+            get
+            {
+                if (_eans == null)
+                {
+                    _eans = _ebSoftGood
+                        .Value<JArray>("ean")
+                        .ToObject<List<string>>();
+                }
+                return _eans;
+            }
+        }
 
         private string Article => _ebSoftGood.Value<string>("article");
 
@@ -42,7 +56,7 @@ namespace EbSoft.Warehouse.SDK
                 .Put("Id", Id)
                 .Put("ReceptionId", _receptionId)
                 .Put("Article", Article)
-                .Put("Ean", Eans)
+                .Put("Ean", UsedEan())
                 .Put("oa", _ebSoftGood.Value<string>("oa"))
                 .Put("Quantity", _ebSoftGood.Value<int>("qt"))
                 .Put("ItemType", ItemType)
@@ -58,8 +72,12 @@ namespace EbSoft.Warehouse.SDK
 
         public bool Equals(string data)
         {
-            return Eans.Contains(data)
-                || data == Article
+            if (Eans.Contains(data))
+            {
+                _lastTimeFoundByEan = data;
+                return true;
+            }
+            return data == Article
                 || data == ItemType;
         }
 
@@ -71,6 +89,15 @@ namespace EbSoft.Warehouse.SDK
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);
+        }
+
+        private string UsedEan()
+        {
+            if (!string.IsNullOrEmpty(_lastTimeFoundByEan))
+            {
+                return _lastTimeFoundByEan;
+            }
+            return Eans.First(); // should be at least one otherwise its an issue
         }
     }
 }

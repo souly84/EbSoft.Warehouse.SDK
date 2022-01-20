@@ -134,6 +134,23 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task Reception_Confirmation_LastScannedEan()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            var confirmation = reception.Confirmation();
+            await confirmation.AddAsync("4002515996744");
+            await confirmation.AddAsync("4002515996745");
+            await confirmation.CommitAsync();
+            Assert.Equal(
+                new FileContent("./Data/ReceptionConfirmationLastScannedEanRequestBody.txt").ToString().NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact]
         public async Task Reception_Confirmation_RemoveByGoodBarcode()
         {
             var ebSoftServer = new FakeBackend();
