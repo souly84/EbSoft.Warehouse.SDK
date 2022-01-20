@@ -20,7 +20,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                             ""oa_dossier"":""OA843460"",
                             ""article"":""BEKO HCA63640BH"",
                             ""qt"":""5"",
-                            ""ean"":""8690842130830"",
+                            ""ean"":[ ""8690842130830"" ],
                             ""qtin"":""5"",
                             ""error_code"":null,
                             ""commentaire"":null,

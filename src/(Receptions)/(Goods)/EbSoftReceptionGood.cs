@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
@@ -10,6 +12,7 @@ namespace EbSoft.Warehouse.SDK
         private readonly int _receptionId;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
+        private List<string> _eans;
 
         public EbSoftReceptionGood(
             int receptionId,
@@ -20,8 +23,21 @@ namespace EbSoft.Warehouse.SDK
         }
 
         private int Id => _ebSoftGood.Value<int>("id");
+        private string _lastTimeFoundByEan;
 
-        private string Ean => _ebSoftGood.Value<string>("ean");
+        private List<string> Eans
+        {
+            get
+            {
+                if (_eans == null)
+                {
+                    _eans = _ebSoftGood
+                        .Value<JArray>("ean")
+                        .ToObject<List<string>>();
+                }
+                return _eans;
+            }
+        }
 
         private string Article => _ebSoftGood.Value<string>("article");
 
@@ -39,7 +55,7 @@ namespace EbSoft.Warehouse.SDK
                 .Put("Id", Id)
                 .Put("ReceptionId", _receptionId)
                 .Put("Article", Article)
-                .Put("Ean", Ean)
+                .Put("Ean", UsedEan())
                 .Put("oa", _ebSoftGood.Value<string>("oa"))
                 .Put("Quantity", _ebSoftGood.Value<int>("qt"))
                 .Put("ItemType", ItemType)
@@ -55,8 +71,12 @@ namespace EbSoft.Warehouse.SDK
 
         public bool Equals(string data)
         {
-            return data == Ean
-                || data == Article
+            if (Eans.Contains(data))
+            {
+                _lastTimeFoundByEan = data;
+                return true;
+            }
+            return data == Article
                 || data == ItemType;
         }
 
@@ -68,6 +88,15 @@ namespace EbSoft.Warehouse.SDK
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);
+        }
+
+        private string UsedEan()
+        {
+            if (!string.IsNullOrEmpty(_lastTimeFoundByEan))
+            {
+                return _lastTimeFoundByEan;
+            }
+            return Eans.First(); // should be at least one otherwise its an issue
         }
     }
 }

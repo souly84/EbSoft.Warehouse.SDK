@@ -55,6 +55,9 @@
     <Content Include="Data\StockMoveResponse.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\ReceptionConfirmationLastScannedEanRequestBody.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
