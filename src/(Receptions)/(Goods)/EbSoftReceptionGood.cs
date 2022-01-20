@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
@@ -10,6 +11,7 @@ namespace EbSoft.Warehouse.SDK
         private readonly int _receptionId;
         private readonly JObject _ebSoftGood;
         private IGoodConfirmation _confirmation;
+        private List<string> _eans;
 
         public EbSoftReceptionGood(
             int receptionId,
@@ -17,11 +19,12 @@ namespace EbSoft.Warehouse.SDK
         {
             _receptionId = receptionId;
             _ebSoftGood = ebSoftGood;
+            _eans = _ebSoftGood.Value<JArray>("ean").ToObject<List<string>>();
         }
 
         private int Id => _ebSoftGood.Value<int>("id");
 
-        private string Ean => _ebSoftGood.Value<string>("ean");
+        private List<string> Eans => _eans;
 
         private string Article => _ebSoftGood.Value<string>("article");
 
@@ -39,7 +42,7 @@ namespace EbSoft.Warehouse.SDK
                 .Put("Id", Id)
                 .Put("ReceptionId", _receptionId)
                 .Put("Article", Article)
-                .Put("Ean", Ean)
+                .Put("Ean", Eans)
                 .Put("oa", _ebSoftGood.Value<string>("oa"))
                 .Put("Quantity", _ebSoftGood.Value<int>("qt"))
                 .Put("ItemType", ItemType)
@@ -55,7 +58,7 @@ namespace EbSoft.Warehouse.SDK
 
         public bool Equals(string data)
         {
-            return data == Ean
+            return Eans.Contains(data)
                 || data == Article
                 || data == ItemType;
         }
