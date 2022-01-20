@@ -20,7 +20,6 @@ namespace EbSoft.Warehouse.SDK
         {
             _receptionId = receptionId;
             _ebSoftGood = ebSoftGood;
-           
         }
 
         private int Id => _ebSoftGood.Value<int>("id");

@@ -134,7 +134,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
-        public async Task Reception_Confirmation_LastScannedEan()
+        public async Task Reception_Confirmation_LastScannedEanIsSentToTheServer()
         {
             var ebSoftServer = new FakeBackend();
             var reception = await new EbSoftCompanyReception(
