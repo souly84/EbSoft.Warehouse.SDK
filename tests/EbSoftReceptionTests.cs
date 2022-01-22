@@ -140,12 +140,38 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            var confirmation = reception.Confirmation();
-            await confirmation.AddAsync("4002515996744");
-            await confirmation.AddAsync("4002515996745");
+            var confirmation = await reception
+                .Confirmation()
+                .AddAsync("4002515996744", "4002515996745");
             await confirmation.CommitAsync();
             Assert.Equal(
                 new FileContent("./Data/ReceptionConfirmationLastScannedEanRequestBody.txt").ToString().NoNewLines(),
+                ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact]
+        public async Task Reception_Confirmation_SentToTheServer()
+        {
+            var ebSoftServer = new FakeBackend();
+            var reception = await new ReceptionWithExtraConfirmedGoods(
+                new ReceptionWithUnkownGoods(
+                    await new EbSoftCompanyReception(
+                        ebSoftServer.ToWebRequest()
+                    ).ReceptionAsync()
+                )
+            ).ConfirmAsync(
+                "4002516315155",
+                "4002516315155",
+                "4002516315155",
+                "4002515996745",
+                "4002515996745",
+                "4002515996745",
+                "UnknownBarcode"
+            );
+            await reception.Confirmation().CommitAsync();
+            Assert.Equal(
+                new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }

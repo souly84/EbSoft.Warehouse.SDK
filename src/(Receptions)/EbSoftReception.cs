@@ -10,7 +10,7 @@ namespace EbSoft.Warehouse.SDK
     {
         private readonly IWebRequest _server;
         private readonly int _receptionId;
-        private IEntities<IReceptionGood> _goods;
+        private IReceptionGoods _goods;
 
         public EbSoftReception(
             IWebRequest server,
@@ -20,10 +20,11 @@ namespace EbSoft.Warehouse.SDK
             _receptionId = receptionId;
         }
 
-        public IEntities<IReceptionGood> Goods => _goods ?? (_goods = new EbSoftReceptionGoods(
+        public IReceptionGoods Goods => _goods ?? (_goods = new CachedReceptionGoods(
+            new EbSoftReceptionGoods(
             _server,
-            _receptionId).Cached()
-        );
+            _receptionId)
+        ));
 
         public void PrintTo(IMedia media)
         {
