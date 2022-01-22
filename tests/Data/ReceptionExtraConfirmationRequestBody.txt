@@ -1,0 +1,39 @@
+﻿------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=filter
+
+setLinesCmr
+------WebRequestBoundary
+Content-Type: application/json; charset=utf-8
+Content-Disposition: form-data; name=json
+
+{
+  "cmrId": 5,
+  "lines": [
+    {
+      "id": "0",
+      "qty": "1",
+      "gtin": "UnknownBarcode",
+      "error_code": null
+    },
+    {
+      "id": "30",
+      "qty": "2",
+      "gtin": "4002516315155",
+      "error_code": null
+    },
+    {
+      "id": "23",
+      "qty": "2",
+      "gtin": "4002515996745",
+      "error_code": null
+    },
+    {
+      "id": "52",
+      "qty": "1",
+      "gtin": "4002516315155",
+      "error_code": null
+    }
+  ]
+}
+------WebRequestBoundary--

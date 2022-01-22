@@ -14,7 +14,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             _origin = origin;
         }
 
-        public IEntities<IReceptionGood> Goods => _origin.Goods;
+        public IReceptionGoods Goods => _origin.Goods;
 
         public async Task<T> ConfirmAsync()
         {

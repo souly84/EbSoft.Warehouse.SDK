@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Warehouse.Core;
+using Baseextensions = Warehouse.Core.ConfirmationExtensions;
 
 namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
 {
@@ -9,7 +10,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
         {
             foreach (var barcode in barcodes)
             {
-                await confirmation.AddAsync(barcode);
+                await Baseextensions.AddAsync(confirmation, barcode);
             }
             return confirmation;
         }

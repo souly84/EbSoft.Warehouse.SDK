@@ -16,10 +16,26 @@ namespace EbSoft.Warehouse.SDK
 
         public EbSoftReceptionGood(
             int receptionId,
-            JObject ebSoftGood)
+            string barcode)
+            : this(
+                  receptionId,
+                  new JObject(
+                      new JProperty("ean", new JArray(barcode)),
+                      new JProperty("qt", 1000)
+                  ),
+                  true
+              )
+        {
+        }
+
+        public EbSoftReceptionGood(
+            int receptionId,
+            JObject ebSoftGood,
+            bool isUnknown = false)
         {
             _receptionId = receptionId;
             _ebSoftGood = ebSoftGood;
+            IsUnknown = isUnknown;
         }
 
         private int Id => _ebSoftGood.Value<int>("id");
@@ -46,8 +62,12 @@ namespace EbSoft.Warehouse.SDK
         private int ConfirmedQuantity => _ebSoftGood.Value<int>("qtin");
 
         public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity, ConfirmedQuantity));
-       
+
         public int Quantity => _ebSoftGood.Value<int>("qt");
+
+        public bool IsUnknown { get; }
+
+        public bool IsExtraConfirmed => false;
 
         public void PrintTo(IMedia media)
         {
@@ -65,8 +85,9 @@ namespace EbSoft.Warehouse.SDK
         public override bool Equals(object obj)
         {
             return object.ReferenceEquals(obj, this)
-                || obj is string data && Equals(data)
-                || obj is int id && Equals(id);
+                || (obj is EbSoftReceptionGood ebSoftReceptionGood && ebSoftReceptionGood.Id == Id)
+                || (obj is string data && Equals(data))
+                || (obj is int id && Equals(id));
         }
 
         public bool Equals(string data)
