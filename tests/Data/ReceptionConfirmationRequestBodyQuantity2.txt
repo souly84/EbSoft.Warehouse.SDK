@@ -12,7 +12,7 @@ Content-Disposition: form-data; name=json
   "lines": [
     {
       "id": "30",
-      "qty": "2",
+      "qty": 2,
       "gtin": "4002516315155",
       "error_code": null
     }

@@ -166,6 +166,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 "4002516315155",
                 "4002515996745",
                 "4002515996745",
+                "4002515996745",
                 "UnknownBarcode"
             );
             await reception.Confirmation().CommitAsync();
