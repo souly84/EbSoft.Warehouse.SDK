@@ -39,7 +39,7 @@ namespace EbSoft.Warehouse.SDK
                     }
 
                     var jObject = new JObject(
-                        new JProperty("id", id == "0" ? "" : id),
+                        new JProperty("id", id == "0" ? "" : id), // when id == "0" means unknown good
                         new JProperty("qty", confirmation.ConfirmedQuantity),
                         new JProperty("gtin", goodData.Value<string>("Ean")),
                         new JProperty("error_code", null)
