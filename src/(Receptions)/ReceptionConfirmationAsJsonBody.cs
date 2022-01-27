@@ -31,7 +31,7 @@ namespace EbSoft.Warehouse.SDK
                     var id = goodData.Value<string>("Id");
                     if (extraConfirmedIdList.Contains(id))
                     {
-                        continue; // skip because its alreadybeen added as Extra confirmed good
+                        continue; // skip because its already been added as Extra confirmed good
                     }
                     if (confirmation.Good.IsExtraConfirmed)
                     {
