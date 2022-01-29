@@ -40,6 +40,7 @@ namespace EbSoft.Warehouse.SDK
         {
             media
                 .Put("Data", _good)
+                .Put("Quantity", Quantity)
                 .Put("Storages", Storages)
                 .Put("Movement", Movement);
         }

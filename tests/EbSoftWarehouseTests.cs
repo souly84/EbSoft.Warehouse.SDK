@@ -1,9 +1,6 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
-using MediaPrint;
-using Warehouse.Core;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
