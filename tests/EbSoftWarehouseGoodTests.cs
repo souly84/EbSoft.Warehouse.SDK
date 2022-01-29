@@ -69,9 +69,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var good = await new EbSoftFakeServer()
                     .Warehouse()
                     .Goods.FirstAsync("4002516315155");
-            Xunit.Assert.Equal(
-                good,
-                good
+            Xunit.Assert.True(
+                good.Equals(good)
             );
         }
 
