@@ -46,6 +46,30 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task PutAwayGoodStorageZeroQuantityByNonExistingBarcode()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            Assert.Equal(
+                0,
+                await (await good.Storages.PutAway.FirstAsync()).QuantityForAsync("NonExistingBarcode")
+            );
+        }
+
+        [Fact]
+        public async Task PutAwayGoodStorageGetHashCode()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            Assert.NotEqual(
+                0,
+                (await good.Storages.PutAway.FirstAsync()).GetHashCode()
+            );
+        }
+
+        [Fact]
         public async Task RaceStorages()
         {
             var good = await new EbSoftFakeServer()

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using MediaPrint;
-using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant.Extensions;
 using WebRequest.Elegant.Fakes;
@@ -33,8 +32,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4242005051137")
-                .FirstAsync();
+                .Goods.FirstAsync("4242005051137");
 
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
@@ -44,9 +42,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task GoodStorages()
         {
-            var good = await new EbSoftCompany(
-                new EbSoftFakeServer().ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Equal(
                 2,
                 (await good.Storages.ToListAsync()).Count
@@ -54,21 +52,45 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task GoodGetHashCode()
+        {
+            Assert.NotEqual(
+                0,
+                (await new EbSoftFakeServer()
+                    .Warehouse()
+                    .Goods.FirstAsync("4002516315155")
+                ).GetHashCode()
+            );
+        }
+
+        [Fact]
+        public async Task TheSameGood()
+        {
+            var good = await new EbSoftFakeServer()
+                    .Warehouse()
+                    .Goods.FirstAsync("4002516315155");
+            Assert.Same(
+                good,
+                good
+            );
+        }
+
+        [Fact]
         public Task ThrowsInvalidOperationExceptionWhenNoGoodEan()
         {
             return Assert.ThrowsAsync<InvalidOperationException>(
-                () => new EbSoftCompany(
-                    new EbSoftFakeServer().ToWebRequest()
-                ).Warehouse.Goods.FirstAsync()
+                () => new EbSoftFakeServer()
+                    .Warehouse()
+                    .Goods.FirstAsync()
             );
         }
 
         [Fact]
         public async Task GoodStoragesTotalQuantity()
         {
-            var good = await new EbSoftCompany(
-                new EbSoftFakeServer().ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Equal(
                 3,
                 good.Quantity
@@ -80,8 +102,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4242005051137")
-                .FirstAsync();
+                .Goods.FirstAsync("4242005051137");
             var goodStorages = await good.Storages.ToListAsync();
             await good.Movement
                 .From(goodStorages.First())
@@ -94,27 +115,27 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task StockMovement()
         {
-            var backend = new EbSoftFakeServer();
-            var good = await new EbSoftCompany(
-                backend.ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            var fakeServer = new EbSoftFakeServer();
+            var good = await fakeServer
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             await good.Movement
                 .From(await good.Storages.ByBarcodeAsync("135332235624"))
                 .MoveToAsync(await good.Storages.ByBarcodeAsync("122334461809"), 5);
             Assert.Equal(
                 File.ReadAllText("./Data/StockMoveResponse.txt")
                     .NoNewLines(),
-                backend.Proxy.RequestsContent[1].NoNewLines()
+                fakeServer.Proxy.RequestsContent[1].NoNewLines()
             );
         }
 
         [Fact]
         public async Task PutAway()
         {
-            var backend = new EbSoftFakeServer();
-            var good = await new EbSoftCompany(
-                backend.ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155").FirstAsync();
+            var fakeServer = new EbSoftFakeServer();
+            var good = await fakeServer
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             await good.Movement
                 .From(await good.Storages.Race.FirstAsync())
                 .MoveToAsync(await good.Storages.PutAway.FirstAsync(), 5);
@@ -122,7 +143,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.Equal(
                 File.ReadAllText("./Data/PutAwayStockMoveResponse.txt")
                     .NoNewLines(),
-                backend.Proxy.RequestsContent[1].NoNewLines()
+                fakeServer.Proxy.RequestsContent[1].NoNewLines()
             );
         }
 
@@ -131,8 +152,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                 .Warehouse
-                .Goods.For("4002516315155")
-                .FirstAsync();
+                .Goods.FirstAsync("4002516315155");
             await good.Movement.MoveToAsync(new MockStorage(), 5);
             Assert.NotEmpty(
                 await good.Storages.ToListAsync()
@@ -144,15 +164,18 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             var good = await _ebSoftCompany
                .Warehouse
-               .Goods.For("4242005051137")
-               .FirstAsync();
-            var goodStorage = await good.Storages.FirstAsync();
-            
-            Assert.EqualJson(@"{
+               .Goods.FirstAsync("4242005051137");
+
+            Assert.EqualJson(
+                @"{
                     ""Quantity"": ""2"",
                     ""Location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.0"",
                     ""Number"": ""135332235624""
-                    }", goodStorage.ToJson().ToString());
+                  }",
+                (await good.Storages.FirstAsync())
+                    .ToJson()
+                    .ToString()
+            );
         }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
@@ -161,12 +184,13 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var proxy = new ProxyHttpMessageHandler();
             var company = new EbSoftCompany(
                 new WebRequest.Elegant.WebRequest(
-                    ConfigurationManager.AppSettings["companyUri"], proxy)
+                    ConfigurationManager.AppSettings["companyUri"],
+                    proxy
+                )
             );
             var good = await company
                 .Warehouse
-                .Goods.For("8690842264610")
-                .FirstAsync();
+                .Goods.FirstAsync("8690842264610");
 
             await good.Movement
                 .From(await good.Storages.PutAway.FirstAsync())
