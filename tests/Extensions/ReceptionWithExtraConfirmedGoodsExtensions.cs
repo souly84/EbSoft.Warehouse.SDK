@@ -14,6 +14,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                 var good = await reception.ByBarcodeAsync(barcode);
                 good.Confirmation.Increase(1);
             }
+            await reception.Confirmation().CommitAsync();
             return reception;
         }
     }
