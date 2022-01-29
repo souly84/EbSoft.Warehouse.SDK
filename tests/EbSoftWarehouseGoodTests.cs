@@ -45,7 +45,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         public async Task GoodStorages()
         {
             var good = await new EbSoftCompany(
-                new FakeBackend().ToWebRequest()
+                new EbSoftFakeServer().ToWebRequest()
             ).Warehouse.Goods.For("4002516315155").FirstAsync();
             Assert.Equal(
                 2,
@@ -58,7 +58,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             return Assert.ThrowsAsync<InvalidOperationException>(
                 () => new EbSoftCompany(
-                    new FakeBackend().ToWebRequest()
+                    new EbSoftFakeServer().ToWebRequest()
                 ).Warehouse.Goods.FirstAsync()
             );
         }
@@ -67,7 +67,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         public async Task GoodStoragesTotalQuantity()
         {
             var good = await new EbSoftCompany(
-                new FakeBackend().ToWebRequest()
+                new EbSoftFakeServer().ToWebRequest()
             ).Warehouse.Goods.For("4002516315155").FirstAsync();
             Assert.Equal(
                 3,
@@ -94,7 +94,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task StockMovement()
         {
-            var backend = new FakeBackend();
+            var backend = new EbSoftFakeServer();
             var good = await new EbSoftCompany(
                 backend.ToWebRequest()
             ).Warehouse.Goods.For("4002516315155").FirstAsync();
@@ -111,7 +111,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task PutAway()
         {
-            var backend = new FakeBackend();
+            var backend = new EbSoftFakeServer();
             var good = await new EbSoftCompany(
                 backend.ToWebRequest()
             ).Warehouse.Goods.For("4002516315155").FirstAsync();

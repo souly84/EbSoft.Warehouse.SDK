@@ -17,6 +17,8 @@ namespace EbSoft.Warehouse.SDK
             _good = good;
         }
 
+        private string Ean => _good.Value<string>("fromean");
+
         public int Quantity => new GoodStoragesTotalQuantity(_good).ToInt();
 
         public IStorages Storages
@@ -26,7 +28,8 @@ namespace EbSoft.Warehouse.SDK
                 if (_storages == null)
                 {
                     _storages = new EbSoftGoodStorages(
-                        _good.Value<JArray>("locations")
+                        _good.Value<JArray>("locations"),
+                       this
                     );
                 }
 
@@ -35,6 +38,18 @@ namespace EbSoft.Warehouse.SDK
         }
 
         public IMovement Movement => new EbSoftGoodMovement(_server, this);
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj)
+                || (obj is string barcode && barcode == Ean)
+                || (obj is EbSoftWarehouseGood ebSoftGood && ebSoftGood.Ean == Ean);
+        }
+
+        public override int GetHashCode()
+        {
+            return Ean.GetHashCode();
+        }
 
         public void PrintTo(IMedia media)
         {

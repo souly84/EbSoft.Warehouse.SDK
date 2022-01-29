@@ -24,7 +24,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             Assert.NotNull(
                 await new EbSoftCompany(
-                    new FakeBackend().ToWebRequest()
+                    new EbSoftFakeServer().ToWebRequest()
                 ).Warehouse
                  .ByBarcodeAsync("133037620160")
             );

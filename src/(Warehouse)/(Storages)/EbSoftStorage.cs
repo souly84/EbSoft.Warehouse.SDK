@@ -9,20 +9,29 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftStorage : IStorage
     {
         private readonly JObject _storage;
+        private readonly IWarehouseGood _good;
 
         public EbSoftStorage(
-            JObject storage)
+            JObject storage,
+            IWarehouseGood good)
         {
             _storage = storage;
+            _good = good;
         }
 
         private string Ean => _storage.Value<string>("ean");
 
-        public IEntities<IWarehouseGood> Goods => throw new NotImplementedException();
+        private int GoodInStorageQuantity => _storage.Value<int>("quantity");
 
-        public Task DecreaseAsync(IWarehouseGood good, int quantity)
+        public IEntities<IWarehouseGood> Goods => new ListOfEntities<IWarehouseGood>(_good);
+
+        public Task<int> QuantityForAsync(IWarehouseGood good)
         {
-            throw new NotImplementedException();
+            if (good.Equals(_good))
+            {
+                return Task.FromResult(GoodInStorageQuantity);
+            }
+            return Task.FromResult(0);
         }
 
         public override bool Equals(object obj)
@@ -42,10 +51,15 @@ namespace EbSoft.Warehouse.SDK
             throw new NotImplementedException();
         }
 
+        public Task DecreaseAsync(IWarehouseGood good, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void PrintTo(IMedia media)
         {
             media
-                .Put("Quantity", _storage.Value<int>("quantity"))
+                .Put("Quantity", GoodInStorageQuantity)
                 .Put("Location", _storage.Value<string>("location"))
                 .Put("Number", Ean);
         }

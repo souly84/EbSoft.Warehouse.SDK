@@ -25,14 +25,15 @@ namespace EbSoft.Warehouse.SDK
 
         public async Task<IStorage> ByBarcodeAsync(string ean)
         {
-            return new EbSoftStorage(
+            return new  EbSoftStorage(
                 await _server.WithQueryParams(
                     new Dictionary<string, string>
                     {
                         { "filter", "getBoxes" },
                         { "ean", ean },
                     }
-                ).ReadAsync<JObject>()
+                ).ReadAsync<JObject>(),
+                new NoWarehouseGood()
             );
         }
 

@@ -47,7 +47,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_FullConfirmation()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
@@ -63,7 +63,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_AddByGood()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
@@ -99,7 +99,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_RemoveByGood()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
@@ -120,7 +120,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_AddByGoodBarcode()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
@@ -134,7 +134,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_LastScannedEanIsSentToTheServer()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
@@ -148,7 +148,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_SentToTheServer()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             await new ReceptionWithExtraConfirmedGoods(
                 new ReceptionWithUnkownGoods(
                     await new EbSoftCompanyReception(
@@ -173,7 +173,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task Reception_Confirmation_RemoveByGoodBarcode()
         {
-            var ebSoftServer = new FakeBackend();
+            var ebSoftServer = new EbSoftFakeServer();
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();

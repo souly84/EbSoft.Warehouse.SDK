@@ -12,10 +12,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task PutAwayStorages()
         {
-            var good = await new EbSoftCompany(
-                new FakeBackend().ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155")
-             .FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Equal(
                 1,
                 (await good.Storages.PutAway.ToListAsync()).Count
@@ -23,12 +22,35 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task PutAwayGoodStorageQuantity()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            Assert.Equal(
+                2,
+                await (await good.Storages.PutAway.FirstAsync()).QuantityForAsync(good)
+            );
+        }
+
+        [Fact]
+        public async Task PutAwayGoodStorageQuantityByBarcode()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            Assert.Equal(
+                2,
+                await (await good.Storages.PutAway.FirstAsync()).QuantityForAsync("4002516315155")
+            );
+        }
+
+        [Fact]
         public async Task RaceStorages()
         {
-            var good = await new EbSoftCompany(
-                new FakeBackend().ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155")
-             .FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Equal(
                 1,
                 (await good.Storages.Race.ToListAsync()).Count
@@ -38,10 +60,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task ReserveStorages()
         {
-            var good = await new EbSoftCompany(
-                new FakeBackend().ToWebRequest()
-            ).Warehouse.Goods.For("4002516315155")
-             .FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Equal(
                 0,
                 (await good.Storages.Reserve.ToListAsync()).Count
@@ -51,10 +72,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         [Fact]
         public async Task DoesNotSupportFilters()
         {
-            var good = await new EbSoftCompany(
-                 new FakeBackend().ToWebRequest()
-             ).Warehouse.Goods.For("4002516315155")
-              .FirstAsync();
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
             Assert.Throws<NotImplementedException>(() =>
                 good.Storages.With(new EmptyFilter())
             );

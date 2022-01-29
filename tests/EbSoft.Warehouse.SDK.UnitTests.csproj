@@ -64,10 +64,6 @@
     </Content>
   </ItemGroup>
   
-  <ItemGroup>
-    <None Remove="Warehouse.Core" />
-    <None Remove="Data\ReceptionConfirmationRequestBody %28copy%29.txt" />
-  </ItemGroup>
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>
