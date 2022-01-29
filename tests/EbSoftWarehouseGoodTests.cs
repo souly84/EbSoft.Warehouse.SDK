@@ -69,7 +69,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var good = await new EbSoftFakeServer()
                     .Warehouse()
                     .Goods.FirstAsync("4002516315155");
-            Assert.Same(
+            Xunit.Assert.Equal(
                 good,
                 good
             );

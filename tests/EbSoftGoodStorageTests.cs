@@ -10,7 +10,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         public void EqualsTheSame()
         {
             var storage = new EbSoftStorage(new JObject(), new MockWarehouseGood("1", 1));
-            Xunit.Assert.Same(
+            Xunit.Assert.Equal(
                 storage,
                 storage
             );
