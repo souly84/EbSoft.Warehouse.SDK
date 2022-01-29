@@ -124,9 +124,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            var confirmation = reception.Confirmation();
-            await confirmation.AddAsync("4002515996744");
-            await confirmation.CommitAsync();
+            await reception.ConfirmAsync("4002515996744");
             Assert.Equal(
                 new FileContent("./Data/ReceptionConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
@@ -140,10 +138,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            var confirmation = await reception
-                .Confirmation()
-                .AddAsync("4002515996744", "4002515996745");
-            await confirmation.CommitAsync();
+            await reception.ConfirmAsync("4002515996744", "4002515996745");
             Assert.Equal(
                 new FileContent("./Data/ReceptionConfirmationLastScannedEanRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
