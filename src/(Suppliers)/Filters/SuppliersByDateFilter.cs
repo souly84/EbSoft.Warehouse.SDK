@@ -18,6 +18,11 @@ namespace EbSoft.Warehouse.SDK
             _filterDate = filterDate;
         }
 
+        public bool Matches(object entity)
+        {
+            return entity != null && entity.Equals(_filterDate);
+        }
+
         public Dictionary<string, object> ToParams()
         {
             return new Dictionary<string, object>
