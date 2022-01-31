@@ -10,13 +10,15 @@ namespace EbSoft.Warehouse.SDK
     public class EbSoftGoodStorages : IStorages
     {
         private readonly JArray _locations;
+        private readonly IWarehouseGood _good;
         private IEntities<IStorage> _putAway;
         private IEntities<IStorage> _race;
         private IEntities<IStorage> _reserved;
 
-        public EbSoftGoodStorages(JArray locations)
+        public EbSoftGoodStorages(JArray locations, IWarehouseGood good)
         {
             _locations = locations;
+            _good = good;
         }
 
         public IEntities<IStorage> PutAway => _putAway ?? (_putAway = new ListOfEntities<IStorage>(
@@ -49,7 +51,7 @@ namespace EbSoft.Warehouse.SDK
 
         private IStorage ToStorage(JToken storage)
         {
-            return new EbSoftStorage((JObject)storage);
+            return new EbSoftStorage((JObject)storage, _good);
         }
 
         private bool IsPutAway(JToken storage)

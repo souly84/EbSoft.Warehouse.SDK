@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Warehouse.Core;
 using WebRequest.Elegant;
 using WebRequest.Elegant.Fakes;
 
 namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
 {
-    public class FakeBackend
+    public class EbSoftFakeServer
     {
         public ProxyHttpMessageHandler Proxy { get; private set; }
 
@@ -38,6 +39,16 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                 root,
                 Proxy
             );
+        }
+
+        public ICompany Company()
+        {
+            return new EbSoftCompany(ToWebRequest());
+        }
+
+        public IWarehouse Warehouse()
+        {
+            return Company().Warehouse;
         }
     }
 }

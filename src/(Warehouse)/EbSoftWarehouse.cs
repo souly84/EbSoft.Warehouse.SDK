@@ -32,7 +32,8 @@ namespace EbSoft.Warehouse.SDK
                         { "filter", "getBoxes" },
                         { "ean", ean },
                     }
-                ).ReadAsync<JObject>()
+                ).ReadAsync<JObject>(),
+                new NoWarehouseGood()
             );
         }
 

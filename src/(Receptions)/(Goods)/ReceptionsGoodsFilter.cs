@@ -12,6 +12,11 @@ namespace EbSoft.Warehouse.SDK
             _receptionId = receptionId;
         }
 
+        public bool Matches(object entity)
+        {
+            return entity != null && entity.Equals(_receptionId);
+        }
+
         public Dictionary<string, object> ToParams()
         {
             return new Dictionary<string, object>

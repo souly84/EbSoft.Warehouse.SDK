@@ -1,9 +1,6 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
-using MediaPrint;
-using Warehouse.Core;
 using Xunit;
 using Assert = EbSoft.Warehouse.SDK.UnitTests.Extensions.Assert;
 
@@ -27,7 +24,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             Assert.NotNull(
                 await new EbSoftCompany(
-                    new FakeBackend().ToWebRequest()
+                    new EbSoftFakeServer().ToWebRequest()
                 ).Warehouse
                  .ByBarcodeAsync("133037620160")
             );

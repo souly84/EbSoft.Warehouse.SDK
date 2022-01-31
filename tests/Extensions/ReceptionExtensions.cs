@@ -10,5 +10,17 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         {
             return new ConfirmedReception<T>(reception).ConfirmAsync();
         }
+
+        public static async Task<IReception> AddAndConfirmAsync(this IReception reception, params string[] barcodes)
+        {
+            var confirmation = reception.Confirmation();
+            foreach (var barcode in barcodes)
+            {
+                await confirmation.AddAsync(barcode);
+            }
+
+            await confirmation.CommitAsync();
+            return reception;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.Extensions;
-using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant;
 
@@ -19,7 +19,7 @@ namespace EbSoft.Warehouse.SDK
         ) : this(
                 server,
                 receptionId,
-                new ReceptionsGoodsFilter(receptionId)
+                new EmptyFilter()
             )
         {
         }
@@ -34,11 +34,15 @@ namespace EbSoft.Warehouse.SDK
             _filter = filter;
         }
 
-        public Task<IList<IReceptionGood>> ToListAsync()
+        public async Task<IList<IReceptionGood>> ToListAsync()
         {
-            return _server
-                .WithFilter(_filter)
+            var goods = await _server
+                .WithFilter(new ReceptionsGoodsFilter(_receptionId))
                 .SelectAsync<IReceptionGood>((good) => new EbSoftReceptionGood(_receptionId, good));
+
+            return goods
+                .Where(good => _filter.Matches(good))
+                .ToList();
         }
 
         public IReceptionGood UnkownGood(string barcode)
