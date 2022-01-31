@@ -22,22 +22,12 @@ namespace EbSoft.Warehouse.SDK
         public string ToJson()
         {
             var array = new JArray();
-            var extraConfirmedIdList = new List<string>();
             foreach (var confirmation in _goodsConfirmations)
             {
                 if (confirmation.ConfirmedQuantity > 0)
                 {
                     var goodData = confirmation.Good.ToDictionary();
                     var id = goodData.Value<string>("Id");
-                    if (extraConfirmedIdList.Contains(id))
-                    {
-                        continue; // skip because its already been added as Extra confirmed good
-                    }
-                    if (confirmation.Good.IsExtraConfirmed)
-                    {
-                        extraConfirmedIdList.Add(id);
-                    }
-
                     array.Add(
                         new JObject(
                             new JProperty("id", id == "0" ? "" : id), // when id == "0" means unknown good
