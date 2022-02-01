@@ -12,7 +12,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         ).Suppliers;
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task ToListAsync()
+        public async Task ToListAsyncIntegration()
         {
             var suppliers = await _ebSoftSuppliers
                 .For(GlobalTestsParams.SuppliersDateTime)
