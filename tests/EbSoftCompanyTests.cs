@@ -18,7 +18,7 @@ namespace EbSoft.Warehouse.SDK.Tests
         }
 
         [Fact(Skip = "Need to be implemented first")]
-        public async Task SuccesfullLogin()
+        public async Task SuccesfullLoginIntegration()
         {
             Assert.NotNull(
                 await _ebSoftCompany.LoginAsync("", "")
@@ -26,7 +26,7 @@ namespace EbSoft.Warehouse.SDK.Tests
         }
 
         [Fact(Skip = "Need to be implemented first")]
-        public Task UnsuccesfullLogin()
+        public Task UnsuccesfullLoginIntegration()
         {
             return Assert.ThrowsAsync<EbSoftInvalidLoginException>(
                 () => _ebSoftCompany.LoginAsync("wrongEmail@gmail.com", "wrongPassword")

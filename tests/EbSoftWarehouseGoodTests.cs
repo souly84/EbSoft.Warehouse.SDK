@@ -159,7 +159,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task GetLocationFromProduct()
+        public async Task GetLocationFromProductIntegration()
         {
             var good = await _ebSoftCompany
                .Warehouse
@@ -178,7 +178,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task MoveFromPutAwayToRace()
+        public async Task MoveFromPutAwayToRaceIntegration()
         {
             var proxy = new ProxyHttpMessageHandler();
             var company = new EbSoftCompany(

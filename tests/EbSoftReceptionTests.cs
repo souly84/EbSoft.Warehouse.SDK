@@ -36,7 +36,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact(Skip = GlobalTestsParams.AzureDevOpsSkipReason)]
-        public async Task ReceptionGoods()
+        public async Task ReceptionGoodsIntegration()
         {
             var reception = await new EbSoftCompanyReception().ReceptionAsync();
             Assert.NotEmpty(
