@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using Xunit;
@@ -45,7 +44,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
-        public async Task CanBeFoundByArticle()
+        public void CanBeFoundByArticle()
         {
             Assert.True(
                 new EbSoftReceptionGood(
@@ -56,7 +55,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
-        public async Task CanBeFoundByItemType()
+        public void CanBeFoundByItemType()
         {
             Assert.True(
                 new EbSoftReceptionGood(
@@ -67,7 +66,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
-        public async Task CanBeFoundById()
+        public void CanBeFoundById()
         {
             Assert.True(
                 new EbSoftReceptionGood(
