@@ -85,9 +85,22 @@ namespace EbSoft.Warehouse.SDK
         public override bool Equals(object obj)
         {
             return object.ReferenceEquals(obj, this)
-                || (obj is EbSoftReceptionGood ebSoftReceptionGood && ebSoftReceptionGood.Id == Id)
+                || SameReceptionGood(obj)
                 || (obj is string data && Equals(data))
                 || (obj is int id && Equals(id));
+        }
+
+        private bool SameReceptionGood(object obj)
+        {
+            if (obj is EbSoftReceptionGood ebSoftReceptionGood)
+            {
+                if (ebSoftReceptionGood.IsUnknown)
+                {
+                    return Eans.Any(ean => ebSoftReceptionGood.Eans.Contains(ean));
+                }
+                return Id == ebSoftReceptionGood.Id;
+            }
+            return false;
         }
 
         public bool Equals(string data)

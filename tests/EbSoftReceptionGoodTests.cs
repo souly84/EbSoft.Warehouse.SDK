@@ -1,7 +1,10 @@
 ﻿using System.Threading.Tasks;
+using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
+using WebRequest.Elegant.Extensions;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
 {
@@ -41,6 +44,21 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                     "UnknownBarcode"
                 ).IsUnknown
             );
+        }
+
+        [Fact]
+        public async Task UnknownGoodsDifferent()
+        {
+            
+            var ebSoftServer = new EbSoftFakeServer();
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+                ).ReceptionAsync();
+                
+                Xunit.Assert.NotEqual(
+                    reception.Goods.UnkownGood("1234"),
+                    reception.Goods.UnkownGood("5678")
+                );
         }
 
         [Fact]

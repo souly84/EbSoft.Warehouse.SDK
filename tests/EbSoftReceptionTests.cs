@@ -1,7 +1,9 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
+using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant.Extensions;
 using WebRequest.Elegant.Fakes;
@@ -162,7 +164,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 "4002515996745",
                 "4002515996745",
                 "4002515996745",
-                "UnknownBarcode"
+                "UnknownBarcode",
+                "UnknownBarcode2"
             );
             Assert.Equal(
                 new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),
@@ -183,6 +186,39 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.Equal(
                 new FileContent("./Data/EmptyConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact]
+        public async Task NeedConfirmation_LeavesNotConfirmedGoodsOnly()
+        {
+            Assert.Equal(
+                new List<IGoodConfirmation>
+                {
+                    new EbSoftReceptionGood(
+                        2,
+                        JObject.Parse(@"{
+                            ""id"": ""23"",
+                            ""oa"": ""OA840701"",
+                            ""article"": ""MIELE KM6520FR"",
+                            ""qt"": ""2"",
+                            ""ean"": [ ""4002515996744"", ""4002515996745"" ],
+                            ""qtin"": 0,
+                            ""error_code"": null,
+                            ""commentaire"": null,
+                            ""itemType"": ""electro""
+                        }")
+                    ).Confirmation
+                },
+                await new EbSoftReception(
+                    new WebRequest.Elegant.WebRequest(
+                        "http://nonexisting.com",
+                        new FkHttpMessageHandler(
+                            new FileContent("./Data/MieleReceptionsAutoConfirmed.json").ToString()
+                        )
+                    ),
+                    2
+                ).NeedConfirmation().ToListAsync()
             );
         }
     }
