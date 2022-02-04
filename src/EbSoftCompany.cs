@@ -41,10 +41,10 @@ namespace EbSoft.Warehouse.SDK
         public void PrintTo(IMedia media)
         {
             media
-                .Put("Customers", Customers)
-                .Put("Users", Users)
+                .Put("Customers", Customers.ToListAsync().RunSync())
+                .Put("Users", Users.ToListAsync().RunSync())
                 .Put("Warehouse", Warehouse)
-                .Put("Suppliers", Suppliers);
+                .Put("Suppliers", Suppliers.ToListAsync().RunSync());
         }
     }
 }

@@ -22,8 +22,9 @@ namespace EbSoft.Warehouse.SDK
 
         public IReceptionGoods Goods => _goods ?? (_goods = new CachedReceptionGoods(
             new EbSoftReceptionGoods(
-            _server,
-            _receptionId)
+                _server,
+                _receptionId
+            )
         ));
 
         public void PrintTo(IMedia media)
