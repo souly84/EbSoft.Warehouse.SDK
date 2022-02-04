@@ -21,7 +21,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 ""error_code"":null,
                 ""commentaire"":null,
                 ""itemType"":""electro"",
-                ""qtscanned"":""1""
+                ""qtscanned"":""5""
             }";
 
         [Fact]
