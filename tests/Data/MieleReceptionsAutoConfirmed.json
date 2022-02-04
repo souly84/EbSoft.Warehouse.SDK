@@ -8,7 +8,8 @@
     "qtin": 2,
     "error_code": null,
     "commentaire": null,
-    "itemType": "electro"
+    "itemType": "electro",
+    "qtscanned": "2"
   },
   {
     "id": "23",
@@ -19,7 +20,8 @@
     "qtin": 0,
     "error_code": null,
     "commentaire": null,
-    "itemType": "electro"
+    "itemType": "electro",
+    "qtscanned": "0"
   },
   {
     "id": "25",
@@ -30,7 +32,8 @@
     "qtin": 1,
     "error_code": null,
     "commentaire": null,
-    "itemType": "electro"
+    "itemType": "electro",
+    "qtscanned": "1"
   },
   {
     "id": "55",
@@ -41,6 +44,7 @@
     "qtin": 1,
     "error_code": null,
     "commentaire": null,
-    "itemType": "electro"
+    "itemType": "electro",
+    "qtscanned": "1"
   }
 ]

@@ -59,7 +59,7 @@ namespace EbSoft.Warehouse.SDK
 
         private string ItemType => _ebSoftGood.Value<string>("itemType");
 
-        private int ConfirmedQuantity => _ebSoftGood.Value<int>("qtin");
+        private int ConfirmedQuantity => _ebSoftGood.Value<int>("qtscanned");
 
         public IGoodConfirmation Confirmation => _confirmation ?? (_confirmation = new GoodConfirmation(this, Quantity, ConfirmedQuantity));
 
