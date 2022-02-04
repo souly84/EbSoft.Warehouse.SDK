@@ -164,7 +164,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 "4002515996745",
                 "4002515996745",
                 "4002515996745",
-                "UnknownBarcode"
+                "UnknownBarcode",
+                "UnknownBarcode2"
             );
             Assert.Equal(
                 new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),

@@ -23,6 +23,12 @@ Content-Disposition: form-data; name=json
       "error_code": null
     },
     {
+      "id": "",
+      "qty": 1,
+      "gtin": "UnknownBarcode2",
+      "error_code": null
+    },
+    {
       "id": "30",
       "qty": 2,
       "gtin": "4002516315155",
