@@ -151,22 +151,21 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         public async Task Reception_Confirmation_SentToTheServer()
         {
             var ebSoftServer = new EbSoftFakeServer();
-            await new ReceptionWithExtraConfirmedGoods(
-                new ReceptionWithUnkownGoods(
-                    await new EbSoftCompanyReception(
-                        ebSoftServer.ToWebRequest()
-                    ).ReceptionAsync()
-                )
-            ).ConfirmAsync(
-                "4002516315155",
-                "4002516315155",
-                "4002516315155",
-                "4002515996745",
-                "4002515996745",
-                "4002515996745",
-                "UnknownBarcode",
-                "UnknownBarcode2"
-            );
+            var reception = await new EbSoftCompanyReception(
+                ebSoftServer.ToWebRequest()
+            ).ReceptionAsync();
+            await reception
+                .WithExtraConfirmed()
+                .ConfirmAsync(
+                    "4002516315155",
+                    "4002516315155",
+                    "4002516315155",
+                    "4002515996745",
+                    "4002515996745",
+                    "4002515996745",
+                    "UnknownBarcode",
+                    "UnknownBarcode2"
+                );
             Assert.Equal(
                 new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
@@ -218,7 +217,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                         )
                     ),
                     2
-                ).NeedConfirmation().ToListAsync()
+                ).NotConfirmedOnly().ToListAsync()
             );
         }
     }
