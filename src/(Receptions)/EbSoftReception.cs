@@ -27,6 +27,13 @@ namespace EbSoft.Warehouse.SDK
             )
         ));
 
+        public string Id => _receptionId.ToString();
+
+        public Task<IList<IReceptionGood>> ByBarcodeAsync(string barcodeData, bool ignoreConfirmed = false)
+        {
+            return Goods.ByBarcodeAsync(barcodeData, ignoreConfirmed);
+        }
+
         public void PrintTo(IMedia media)
         {
             media
@@ -44,8 +51,7 @@ namespace EbSoft.Warehouse.SDK
                         { "filter", new SimpleString("setLinesCmr") },
                         { "json", new ReceptionConfirmationAsJsonBody(_receptionId, goodsToValidate) }
                     }
-                )
-                .EnsureSuccessAsync();
+                ).EnsureSuccessAsync();
         }
     }
 }

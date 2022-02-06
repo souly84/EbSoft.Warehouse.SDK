@@ -39,6 +39,9 @@ namespace EbSoft.Warehouse.SDK
         }
 
         private int Id => _ebSoftGood.Value<int>("id");
+
+        string IReceptionGood.Id => Id.ToString();
+
         private string _lastTimeFoundByEan;
 
         private List<string> Eans
@@ -90,19 +93,6 @@ namespace EbSoft.Warehouse.SDK
                 || (obj is int id && Equals(id));
         }
 
-        private bool SameReceptionGood(object obj)
-        {
-            if (obj is EbSoftReceptionGood ebSoftReceptionGood)
-            {
-                if (ebSoftReceptionGood.IsUnknown)
-                {
-                    return Eans.Any(ean => ebSoftReceptionGood.Eans.Contains(ean));
-                }
-                return Id == ebSoftReceptionGood.Id;
-            }
-            return false;
-        }
-
         public bool Equals(string data)
         {
             if (Eans.Contains(data))
@@ -122,6 +112,19 @@ namespace EbSoft.Warehouse.SDK
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);
+        }
+
+        private bool SameReceptionGood(object obj)
+        {
+            if (obj is EbSoftReceptionGood ebSoftReceptionGood)
+            {
+                if (ebSoftReceptionGood.IsUnknown)
+                {
+                    return Eans.Any(ean => ebSoftReceptionGood.Eans.Contains(ean));
+                }
+                return Id == ebSoftReceptionGood.Id;
+            }
+            return false;
         }
 
         private string UsedEan()

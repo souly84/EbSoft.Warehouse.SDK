@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Warehouse.Core;
 
 namespace EbSoft.Warehouse.SDK.UnitTests
@@ -9,6 +10,19 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             where T : IReception
         {
             return new ConfirmedReception<T>(reception).ConfirmAsync();
+        }
+
+        public static async Task<IReception> ConfirmAsync(
+            this IReception reception,
+            params string[] barcodes)
+        {
+            foreach (var barcode in barcodes)
+            {
+                var goods = await reception.ByBarcodeAsync(barcode, true);
+                goods.First().Confirmation.Increase(1);
+            }
+            await reception.Confirmation().CommitAsync();
+            return reception;
         }
 
         public static async Task<IReception> AddAndConfirmAsync(this IReception reception, params string[] barcodes)
