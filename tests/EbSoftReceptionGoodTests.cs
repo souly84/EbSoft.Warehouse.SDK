@@ -164,5 +164,27 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 ).Equals(null)
             );
         }
+
+        [Fact]
+        public void EqualToUnknownGoodWithTheSameBarcode()
+        {
+            Assert.True(
+                new EbSoftReceptionGood(
+                    1,
+                    "1111"
+                ).Equals(new MockReceptionGood("1", 1, "1111", isUnknown: true))
+            );
+        }
+
+        [Fact]
+        public void EqualToMockGoodWithTheSameId()
+        {
+            Assert.True(
+                new EbSoftReceptionGood(
+                    1,
+                    JObject.Parse(_goodAsJson)
+                ).Equals(new MockReceptionGood("45", 5, "8690842130830"))
+            );
+        }
     }
 }

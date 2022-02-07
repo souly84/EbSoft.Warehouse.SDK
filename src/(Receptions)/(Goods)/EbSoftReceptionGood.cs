@@ -130,9 +130,9 @@ namespace EbSoft.Warehouse.SDK
             }
             else if (obj is IReceptionGood good)
             {
-                if (good.IsUnknown)
+                if (good.IsUnknown && this.IsUnknown)
                 {
-                    return this.IsUnknown && good.Equals(this);
+                    return Eans.Any(ean => good.Equals(ean));
                 }
                 return good.Id == Id.ToString();
             }
