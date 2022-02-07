@@ -215,6 +215,28 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task ByBarcodeEqualToGoodsInCollection()
+        {
+            var reception = new StatefulReception(
+               new EbSoftReception(
+                   new WebRequest.Elegant.WebRequest(
+                       "http://nonexisting.com",
+                       new FkHttpMessageHandler(
+                           new FileContent("./Data/GroheReceptions.json").ToString()
+                       )
+                   ),
+                   1
+               ).WithExtraConfirmed()
+                .WithoutInitiallyConfirmed(),
+               new KeyValueStorage()
+            );
+            Assert.Equal(
+                (await reception.Goods.ToListAsync()).First(g => g.Equals("4005176473234")),
+                (await reception.ByBarcodeAsync("4005176473234")).First()
+            );
+        }
+
+        [Fact]
         public async Task Reception_Confirmation_RemoveByGoodBarcode()
         {
             var ebSoftServer = new EbSoftFakeServer();

@@ -111,7 +111,7 @@ namespace EbSoft.Warehouse.SDK
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id);
+            return Id;
         }
 
         private bool SameReceptionGood(object obj)
@@ -130,6 +130,10 @@ namespace EbSoft.Warehouse.SDK
             }
             else if (obj is IReceptionGood good)
             {
+                if (good.IsUnknown)
+                {
+                    return this.IsUnknown && good.Equals(this);
+                }
                 return good.Id == Id.ToString();
             }
             return false;

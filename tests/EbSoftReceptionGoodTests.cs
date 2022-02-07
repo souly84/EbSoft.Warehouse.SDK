@@ -141,5 +141,28 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 )
             );
         }
+
+        [Fact]
+        public void GetHashCodeNotZero()
+        {
+            Assert.NotEqual(
+                0,
+                new EbSoftReceptionGood(
+                    1,
+                    JObject.Parse(_goodAsJson)
+                ).GetHashCode()
+            );
+        }
+
+        [Fact]
+        public void NotEqualToNull()
+        {
+            Assert.False(
+                new EbSoftReceptionGood(
+                    1,
+                    JObject.Parse(_goodAsJson)
+                ).Equals(null)
+            );
+        }
     }
 }
