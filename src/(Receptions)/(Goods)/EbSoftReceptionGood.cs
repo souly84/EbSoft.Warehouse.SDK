@@ -124,9 +124,9 @@ namespace EbSoft.Warehouse.SDK
                 }
                 return Id == ebSoftReceptionGood.Id;
             }
-            else if (obj is IReceptionGood good && good != null)
+            else if (obj is IReceptionGood good)
             {
-                return good.Equals(this);
+                return good.Id == Id.ToString();
             }
             return false;
         }
