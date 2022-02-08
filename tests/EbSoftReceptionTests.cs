@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using Newtonsoft.Json.Linq;
@@ -111,10 +112,11 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             await reception.Confirmation().RemoveAsync(goods[0]);
             await reception.Confirmation().CommitAsync();
             Assert.Equal(
-                new FileContent("./Data/ReceptionConfirmationRequestBody.txt").ToString()
-                .Replace("\"id\": \"23\"", "\"id\": \"30\"")
-                .Replace("4002515996744", "4002516315155")
-                .NoNewLines(),
+                new FileContent("./Data/ReceptionConfirmationRequestBody.txt")
+                    .ToString()
+                    .Replace("\"id\": \"23\"", "\"id\": \"30\"")
+                    .Replace("4002515996744", "4002516315155")
+                    .NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
             );
         }
@@ -154,21 +156,105 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            await reception
-                .WithExtraConfirmed()
-                .ConfirmAsync(
-                    "4002516315155",
-                    "4002516315155",
-                    "4002516315155",
-                    "4002515996745",
-                    "4002515996745",
-                    "4002515996745",
-                    "UnknownBarcode",
-                    "UnknownBarcode2"
-                );
+            await new StatefulReception(
+               reception
+                   .WithExtraConfirmed()
+                   .WithoutInitiallyConfirmed(),
+               new KeyValueStorage()
+            ).ConfirmAsync(
+                "4002516315155",
+                "4002516315155",
+                "4002516315155",
+                "4002515996745",
+                "4002515996745",
+                "4002515996745",
+                "UnknownBarcode",
+                "UnknownBarcode2"
+            );
             Assert.Equal(
                 new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact]
+        public async Task FindByGoodsBarcode()
+        {
+            Assert.Equal(
+                new EbSoftReceptionGood(
+                    1,
+                    JObject.Parse(
+                        @"{
+                            ""id"": ""45"",
+                            ""oa_dossier"": ""OA859840"",
+                            ""article"": ""GROHE 31566SD0"",
+                            ""qt"": ""1"",
+                            ""ean"": [ ""4005176473234"" ],
+                            ""qtin"": ""0"",
+                            ""error_code"": null,
+                            ""commentaire"": null,
+                            ""itemType"": ""electro"",
+                            ""qtscanned"": ""0""
+                      }"
+                    )
+                ),
+                (await new StatefulReception(
+                   new EbSoftReception(
+                       new WebRequest.Elegant.WebRequest(
+                           "http://nonexisting.com",
+                           new FkHttpMessageHandler(
+                               new FileContent("./Data/GroheReceptions.json").ToString()
+                           )
+                       ),
+                       1
+                   ).WithExtraConfirmed()
+                    .WithoutInitiallyConfirmed(),
+                   new KeyValueStorage()
+                ).ByBarcodeAsync("4005176473234")).First()
+            );
+        }
+
+        [Fact]
+        public async Task ByBarcodeEqualToGoodsInCollection()
+        {
+            var reception = new StatefulReception(
+               new EbSoftReception(
+                   new WebRequest.Elegant.WebRequest(
+                       "http://nonexisting.com",
+                       new FkHttpMessageHandler(
+                           new FileContent("./Data/GroheReceptions.json").ToString()
+                       )
+                   ),
+                   1
+               ).WithExtraConfirmed()
+                .WithoutInitiallyConfirmed(),
+               new KeyValueStorage()
+            );
+            Assert.Equal(
+                (await reception.Goods.ToListAsync()).First(g => g.Equals("4005176473234")),
+                (await reception.ByBarcodeAsync("4005176473234")).First()
+            );
+        }
+
+        [Fact]
+        public async Task GoodsByBarcodeEqualToReceptionBarcode()
+        {
+            var reception = new StatefulReception(
+               new EbSoftReception(
+                   new WebRequest.Elegant.WebRequest(
+                       "http://nonexisting.com",
+                       new FkHttpMessageHandler(
+                           new FileContent("./Data/GroheReceptions.json").ToString()
+                       )
+                   ),
+                   1
+               ).WithExtraConfirmed()
+                .WithoutInitiallyConfirmed(),
+               new KeyValueStorage()
+            );
+            Assert.Equal(
+                (await reception.ByBarcodeAsync("4005176473234")).First(),
+                (await reception.Goods.ToListAsync()).First(g => g.Equals("4005176473234"))
             );
         }
 
@@ -220,5 +306,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 ).NotConfirmedOnly().ToListAsync()
             );
         }
+
+
     }
 }

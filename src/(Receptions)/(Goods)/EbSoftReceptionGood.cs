@@ -111,7 +111,7 @@ namespace EbSoft.Warehouse.SDK
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id);
+            return Id;
         }
 
         private bool SameReceptionGood(object obj)
@@ -123,6 +123,18 @@ namespace EbSoft.Warehouse.SDK
                     return Eans.Any(ean => ebSoftReceptionGood.Eans.Contains(ean));
                 }
                 return Id == ebSoftReceptionGood.Id;
+            }
+            else if (obj is StatefulReceptionGood statefulGood)
+            {
+                return statefulGood.Equals(this);
+            }
+            else if (obj is IReceptionGood good)
+            {
+                if (good.IsUnknown && this.IsUnknown)
+                {
+                    return Eans.Any(ean => good.Equals(ean));
+                }
+                return good.Id == Id.ToString();
             }
             return false;
         }
