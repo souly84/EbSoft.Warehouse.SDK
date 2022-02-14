@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
+using MediaPrint;
 using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using Xunit;
@@ -184,6 +185,28 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                     1,
                     JObject.Parse(_goodAsJson)
                 ).Equals(new MockReceptionGood("45", 5, "8690842130830"))
+            );
+        }
+
+        [Fact]
+        public void EmptyEanConsideredAsCorrupted()
+        {
+            Assert.True(
+                new EbSoftReceptionGood(
+                    1,
+                    JObject.Parse(@"{
+                        ""id"": ""40"",
+                        ""oa"": ""OA847066"",
+                        ""article"": ""MIELE WED035WPS"",
+                        ""qt"": ""1"",
+                        ""ean"": [],
+                        ""qtin"": 0,
+                        ""error_code"": null,
+                        ""commentaire"": null,
+                        ""itemType"": ""electro"",
+                        ""qtscanned"": ""0""
+                      }")
+                ).ToDictionary().Value<bool>("Corrupted")
             );
         }
     }

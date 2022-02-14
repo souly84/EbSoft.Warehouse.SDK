@@ -82,6 +82,7 @@ namespace EbSoft.Warehouse.SDK
                 .Put("oa", _ebSoftGood.Value<string>("oa"))
                 .Put("Quantity", _ebSoftGood.Value<int>("qt"))
                 .Put("ItemType", ItemType)
+                .Put("Corrupted", !Eans.Any())
                 .Put("ConfirmedQuantity", ConfirmedQuantity);
         }
 
@@ -145,7 +146,7 @@ namespace EbSoft.Warehouse.SDK
             {
                 return _lastTimeFoundByEan;
             }
-            return Eans.First(); // should be at least one otherwise its an issue
+            return Eans.FirstOrDefault() ?? string.Empty;
         }
     }
 }
