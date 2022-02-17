@@ -306,7 +306,5 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 ).NotConfirmedOnly().ToListAsync()
             );
         }
-
-
     }
 }
