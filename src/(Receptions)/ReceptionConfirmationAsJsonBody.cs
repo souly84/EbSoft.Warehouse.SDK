@@ -48,7 +48,10 @@ namespace EbSoft.Warehouse.SDK
         {
             if (confirmation.Good.IsExtraConfirmed)
             {
-                return confirmation.ConfirmedQuantity - confirmation.Good.Quantity;
+                if (confirmation.ConfirmedQuantity > confirmation.Good.Quantity)
+                {
+                    return confirmation.ConfirmedQuantity - confirmation.Good.Quantity;
+                }
             }
             return confirmation.ConfirmedQuantity;
         }

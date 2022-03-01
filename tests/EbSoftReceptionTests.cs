@@ -106,7 +106,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            var goods = await reception.Goods.ToListAsync();
+            var goods = await reception
+                .WithoutInitiallyConfirmed()
+                .Goods.ToListAsync();
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().AddAsync(goods[0]);
             await reception.Confirmation().RemoveAsync(goods[0]);
@@ -156,24 +158,52 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             var reception = await new EbSoftCompanyReception(
                 ebSoftServer.ToWebRequest()
             ).ReceptionAsync();
-            await new StatefulReception(
-               reception
-                   .WithExtraConfirmed()
-                   .WithoutInitiallyConfirmed(),
-               new KeyValueStorage()
-            ).ConfirmAsync(
-                "4002516315155",
-                "4002516315155",
-                "4002516315155",
-                "4002515996745",
-                "4002515996745",
-                "4002515996745",
-                "UnknownBarcode",
-                "UnknownBarcode2"
-            );
+            
+            await reception
+                .WithExtraConfirmed()
+                .WithoutInitiallyConfirmed()
+                .WithConfirmationProgress(new KeyValueStorage())
+                .ConfirmAsync(
+                    "4002516315155",
+                    "4002516315155",
+                    "4002516315155",
+                    "4002515996745",
+                    "4002515996745",
+                    "4002515996745",
+                    "UnknownBarcode",
+                    "UnknownBarcode2"
+                );
             Assert.Equal(
                 new FileContent("./Data/ReceptionExtraConfirmationRequestBody.txt").ToString().NoNewLines(),
                 ebSoftServer.Proxy.RequestsContent[2].NoNewLines()
+            );
+        }
+
+        [Fact]
+        public async Task Reception_InitiallyConfirmed_WasExtraConfirmedSentToTheServer()
+        {
+            var proxyHandler = new ProxyHttpMessageHandler(
+                new FkHttpMessageHandler(
+                    new FileContent("./Data/ExtraConfrimedMieleReceptions.json").ToString()
+                )
+            );
+            await new EbSoftReception(
+                new WebRequest.Elegant.WebRequest(
+                    "http://nonexisting.com",
+                    proxyHandler
+                ),
+                1
+            ).WithExtraConfirmed()
+             .WithoutInitiallyConfirmed()
+             .WithConfirmationProgress(new KeyValueStorage())
+             .ConfirmAsync(
+                    "4002516315155",
+                    "4002515996744",
+                    "4002515996744"
+                );
+            Assert.Equal(
+                new FileContent("./Data/ReceptionInitiallyExtraConfirmedRequestBody.txt").ToString().NoNewLines(),
+                proxyHandler.RequestsContent[1].NoNewLines()
             );
         }
 
