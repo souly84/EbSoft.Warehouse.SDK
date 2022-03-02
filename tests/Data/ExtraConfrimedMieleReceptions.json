@@ -1,0 +1,38 @@
+﻿[
+  {
+    "id": "30",
+    "oa": "OA839948",
+    "article": "MIELE G5050SCVIEDST",
+    "qt": "2",
+    "ean": [ "4002516315155" ],
+    "qtin": 0,
+    "error_code": null,
+    "commentaire": null,
+    "itemType": "electro",
+    "qtscanned": "2"
+  },
+  {
+    "id": "23",
+    "oa": "OA840701",
+    "article": "MIELE KM6520FR",
+    "qt": "2",
+    "ean": [ "4002515996744" ],
+    "qtin": 0,
+    "error_code": null,
+    "commentaire": null,
+    "itemType": "electro",
+    "qtscanned": "4"
+  },
+  {
+    "id": "25",
+    "oa": "OA840701",
+    "article": "MIELE K7314F",
+    "qt": "1",
+    "ean": [ "4002516373582" ],
+    "qtin": 0,
+    "error_code": null,
+    "commentaire": null,
+    "itemType": "electro",
+    "qtscanned": "0"
+  }
+]

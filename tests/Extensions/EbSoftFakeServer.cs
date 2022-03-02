@@ -14,9 +14,9 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
         {
             var root = new Uri("http://fake.company.com");
             var suppliersFilterDate = GlobalTestsParams.SuppliersDateTime.ToString("yyyy-MM-dd");
-            Proxy = new ProxyHttpMessageHandler(
-                new RoutedHttpMessageHandler(
-                    new Route(new Dictionary<string, string>
+            return ToWebRequest(
+                root,
+                new Route(new Dictionary<string, string>
                     {
                         { $"{root}", "Success" },
                         { $"{root}?filter=assignProductTo&ean=4002516315155", "Success" }
@@ -33,6 +33,14 @@ namespace EbSoft.Warehouse.SDK.UnitTests.Extensions
                         new Uri($"{root}?filter=getBoxes&ean=133037620160"),
                         "./Data/WarehouseStorage.json"
                     )
+             );
+        }
+
+        public IWebRequest ToWebRequest(Uri root, IRoute route)
+        {
+            Proxy = new ProxyHttpMessageHandler(
+                new RoutedHttpMessageHandler(
+                    route
                 )
             );
             return new WebRequest.Elegant.WebRequest(

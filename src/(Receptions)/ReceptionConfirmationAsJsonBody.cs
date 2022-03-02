@@ -46,7 +46,7 @@ namespace EbSoft.Warehouse.SDK
 
         private int ConfirmedQty(IGoodConfirmation confirmation)
         {
-            if (confirmation.Good.IsExtraConfirmed)
+            if (ExtraConfirmedAsCombined(confirmation))
             {
                 return confirmation.ConfirmedQuantity - confirmation.Good.Quantity;
             }
@@ -59,6 +59,12 @@ namespace EbSoft.Warehouse.SDK
             return receptionGood.Id == "0" || receptionGood.IsExtraConfirmed
                 ? string.Empty
                 : receptionGood.Id;
+        }
+
+        private bool ExtraConfirmedAsCombined(IGoodConfirmation confirmation)
+        {
+            return confirmation.Good.IsExtraConfirmed
+                && confirmation.ConfirmedQuantity > confirmation.Good.Quantity;
         }
     }
 }
