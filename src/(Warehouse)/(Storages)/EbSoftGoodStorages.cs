@@ -61,12 +61,23 @@ namespace EbSoft.Warehouse.SDK
 
         private bool IsRace(JToken storage)
         {
-            return !IsPutAway(storage) && storage.Value<string>("location").Contains("L-0");
+            
+            return !IsPutAway(storage) && ValidLocationFormat(storage.Value<string>("location"))[3] == "0";
         }
 
         private bool IsReserve(JToken storage)
         {
             return !IsPutAway(storage) && !IsRace(storage);
+        }
+
+        private string[] ValidLocationFormat(string location)
+        {
+            var elements = location.Split('.');
+            if (elements.Count() < 4)
+            {
+                throw new InvalidOperationException("Structure of the location is not correct!");
+            }
+            return elements;
         }
     }
 }
