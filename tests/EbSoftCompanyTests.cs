@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace EbSoft.Warehouse.SDK.Tests
+namespace EbSoft.Warehouse.SDK.UnitTests
 {
     public class EbSoftCompanyTests
     {

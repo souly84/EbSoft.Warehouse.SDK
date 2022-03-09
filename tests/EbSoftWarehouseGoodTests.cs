@@ -46,7 +46,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .Warehouse()
                 .Goods.FirstAsync("4002516315155");
             Assert.Equal(
-                2,
+                3,
                 (await good.Storages.ToListAsync()).Count
             );
         }
@@ -91,7 +91,7 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .Warehouse()
                 .Goods.FirstAsync("4002516315155");
             Assert.Equal(
-                3,
+                4,
                 good.Quantity
             );
         }

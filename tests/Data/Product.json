@@ -14,7 +14,13 @@
     {
       "ean": "122334461809",
       "idlocation": "4376",
-      "location": "ALLEE 126.16.3.L-0",
+      "location": "ZONE 1.B.0.5",
+      "quantity": "1"
+    },
+    {
+      "ean": "122334461808",
+      "idlocation": "4377",
+      "location": "ZONE 1.B.0.0",
       "quantity": "1"
     }
   ]
