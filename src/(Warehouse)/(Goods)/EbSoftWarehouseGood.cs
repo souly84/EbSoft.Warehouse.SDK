@@ -28,7 +28,7 @@ namespace EbSoft.Warehouse.SDK
                 if (_storages == null)
                 {
                     _storages = new EbSoftGoodStorages(
-                        _good.Value<JArray>("locations"),
+                       _good.Value<JArray>("locations"),
                        this
                     );
                 }

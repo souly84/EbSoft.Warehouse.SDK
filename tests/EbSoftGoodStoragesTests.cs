@@ -82,6 +82,36 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public Task InvalidOperationException_WhenLocationFormatIsIncorrect()
+        {
+            return Assert.ThrowsAsync<InvalidOperationException>(() =>
+                new EbSoftGoodStorages(
+                    Newtonsoft.Json.Linq.JArray.Parse(@"[
+                        {
+                            ""ean"": ""135332235624"",
+                            ""idlocation"": ""1"",
+                            ""location"": ""CHECK IN ELECTRO.CHECK IN ELECTRO.CHECK IN ELECTRO.L-0"",
+                            ""quantity"": ""2""
+                        },
+                        {
+                            ""ean"": ""122334461809"",
+                            ""idlocation"": ""4376"",
+                            ""location"": ""ZONE 1.B.5"",
+                            ""quantity"": ""1""
+                        },
+                        {
+                            ""ean"": ""122334461808"",
+                            ""idlocation"": ""4377"",
+                            ""location"": ""ZONE 1.B.0.0"",
+                            ""quantity"": ""1""
+                        }
+                    ]"),
+                    new MockWarehouseGood("1", 1)
+                ).Race.ToListAsync()
+            );
+        }
+
+        [Fact]
         public async Task ReserveStorages()
         {
             var good = await new EbSoftFakeServer()
