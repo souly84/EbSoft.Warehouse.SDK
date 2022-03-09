@@ -203,24 +203,5 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                  proxy.ResponsesContent[2]
             );
         }
-
-        [Fact]
-        public async Task CacheStoragesUpdatedAfterMovement()
-        {
-            var fakeServer = new EbSoftFakeServer();
-            var warehouse = fakeServer.Warehouse();
-            var good = await warehouse
-                .Goods.FirstAsync("4002516315155");
-            await good.Movement
-                .From(await good.Storages.PutAway.FirstAsync())
-                .MoveToAsync(await good.Storages.Race.FirstAsync(), 5);
-           
-            Assert.Equal(
-                File.ReadAllText("./Data/PutAwayStockMoveResponse.txt")
-                    .NoNewLines(),
-                fakeServer.Proxy.RequestsContent[1].NoNewLines()
-            );
-
-        }
     }
 }
