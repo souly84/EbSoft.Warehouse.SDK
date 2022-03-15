@@ -43,7 +43,7 @@ namespace EbSoft.Warehouse.SDK
         {
             return ReferenceEquals(this, obj)
                 || (obj is string barcode && barcode == Ean)
-                || (obj is EbSoftWarehouseGood ebSoftGood && ebSoftGood.Ean == Ean);
+                || (obj is EbSoftWarehouseGood ebSoftGood && ebSoftGood.Ean == Ean && Storages.Equals(ebSoftGood.Storages));
         }
 
         public override int GetHashCode()

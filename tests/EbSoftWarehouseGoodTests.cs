@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EbSoft.Warehouse.SDK.UnitTests.Extensions;
 using MediaPrint;
+using Newtonsoft.Json.Linq;
 using Warehouse.Core;
 using WebRequest.Elegant.Extensions;
 using WebRequest.Elegant.Fakes;
@@ -201,6 +202,37 @@ namespace EbSoft.Warehouse.SDK.UnitTests
             Assert.EqualJson(
                     @"{""code"":""0"",""message"":""Enregistrement"",""data"":""""}",
                  proxy.ResponsesContent[2]
+            );
+        }
+
+        [Fact]
+        public void NotEqualWhenDiffLocations()
+        {
+            var server = new WebRequest.Elegant.WebRequest("http://nonexisting.com");
+            Assert.NotEqual(
+                new EbSoftWarehouseGood(
+                    server,
+                    JObject.Parse(@"{""idarticle"":""699205"",""reference"":""ZANUSSI ZVEEW5X1"",""description"":""45CM - MW"",""fournisseur"":""ELECTROLUX BELGIUM"",""locations"":[{""ean"":""133037917662"",""idlocation"":""15740"",""location"":""B.7.0"",""quantity"":""2""},{""ean"":""133037430102"",""idlocation"":""15753"",""location"":""B.20.0"",""quantity"":""1""},{""ean"":""133037116970"",""idlocation"":""15796"",""location"":""B.63.0"",""quantity"":""2""}],""fromean"":""7332543720071""}")
+                ),
+                new EbSoftWarehouseGood(
+                    server,
+                    JObject.Parse(@"{""idarticle"":""699205"",""reference"":""ZANUSSI ZVEEW5X1"",""description"":""45CM - MW"",""fournisseur"":""ELECTROLUX BELGIUM"",""locations"":[{""ean"":""135332235624"",""idlocation"":""1"",""location"":""CHECK IN ELECTRO.CHECK IN ELECTRO.0"",""quantity"":""2""},{""ean"":""133037917662"",""idlocation"":""15740"",""location"":""B.7.0"",""quantity"":""2""},{""ean"":""133037430102"",""idlocation"":""15753"",""location"":""B.20.0"",""quantity"":""1""}],""fromean"":""7332543720071""}"))
+            );
+        }
+
+        [Fact]
+        public void EqualWithTheSameLocations()
+        {
+            var server = new WebRequest.Elegant.WebRequest("http://nonexisting.com");
+            Assert.Equal(
+                new EbSoftWarehouseGood(
+                    server,
+                    JObject.Parse(@"{""idarticle"":""699205"",""reference"":""ZANUSSI ZVEEW5X1"",""description"":""45CM - MW"",""fournisseur"":""ELECTROLUX BELGIUM"",""locations"":[{""ean"":""133037917662"",""idlocation"":""15740"",""location"":""B.7.0"",""quantity"":""2""},{""ean"":""133037430102"",""idlocation"":""15753"",""location"":""B.20.0"",""quantity"":""1""},{""ean"":""133037116970"",""idlocation"":""15796"",""location"":""B.63.0"",""quantity"":""2""}],""fromean"":""7332543720071""}")
+                ),
+                new EbSoftWarehouseGood(
+                    server,
+                    JObject.Parse(@"{""idarticle"":""699205"",""reference"":""ZANUSSI ZVEEW5X1"",""description"":""45CM - MW"",""fournisseur"":""ELECTROLUX BELGIUM"",""locations"":[{""ean"":""133037917662"",""idlocation"":""15740"",""location"":""B.7.0"",""quantity"":""2""},{""ean"":""133037430102"",""idlocation"":""15753"",""location"":""B.20.0"",""quantity"":""1""},{""ean"":""133037116970"",""idlocation"":""15796"",""location"":""B.63.0"",""quantity"":""2""}],""fromean"":""7332543720071""}")
+                )
             );
         }
     }

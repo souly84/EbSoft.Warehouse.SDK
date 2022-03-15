@@ -68,5 +68,16 @@ namespace EbSoft.Warehouse.SDK
         {
             return !IsPutAway(storage) && !IsRace(storage);
         }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj)
+                || (obj is EbSoftGoodStorages storages && JToken.DeepEquals(storages._locations, _locations));
+        }
+
+        public override int GetHashCode()
+        {
+            return _locations.GetHashCode();
+        }
     }
 }
