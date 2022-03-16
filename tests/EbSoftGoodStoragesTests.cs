@@ -120,6 +120,19 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task TheSame()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            var storages = good.Storages;
+            Assert.Same(
+                storages,
+                storages
+            );
+        }
+
+        [Fact]
         public async Task DoesNotSupportFilters()
         {
             var good = await new EbSoftFakeServer()
