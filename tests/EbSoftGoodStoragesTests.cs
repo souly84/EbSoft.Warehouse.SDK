@@ -94,6 +94,44 @@ namespace EbSoft.Warehouse.SDK.UnitTests
         }
 
         [Fact]
+        public async Task GetHasCodeNotZero()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            var storages = good.Storages;
+
+            Assert.NotEqual(
+                0,
+                storages.GetHashCode()
+            );
+        }
+
+        [Fact]
+        public async Task EqualToTheSame()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            Assert.Equal(
+                good.Storages,
+                good.Storages
+            );
+        }
+
+        [Fact]
+        public async Task TheSame()
+        {
+            var good = await new EbSoftFakeServer()
+                .Warehouse()
+                .Goods.FirstAsync("4002516315155");
+            var storages = good.Storages;
+            Assert.True(
+                storages.Equals(storages)
+            );
+        }
+
+        [Fact]
         public async Task DoesNotSupportFilters()
         {
             var good = await new EbSoftFakeServer()
