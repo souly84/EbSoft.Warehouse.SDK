@@ -126,9 +126,8 @@ namespace EbSoft.Warehouse.SDK.UnitTests
                 .Warehouse()
                 .Goods.FirstAsync("4002516315155");
             var storages = good.Storages;
-            Assert.Same(
-                storages,
-                storages
+            Assert.True(
+                storages.Equals(storages)
             );
         }
 
